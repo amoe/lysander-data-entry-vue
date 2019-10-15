@@ -5,7 +5,8 @@
 <script lang="ts">
 import Vue from 'vue';
 import cytoscape from 'cytoscape';
-
+import {BIKE_GRAPH} from '@/bike-graph';
+import {fromNeo4j} from '@/cytoscape-alternate-format';
 
 const elements = [ // list of graph elements to start with
     { // node a
@@ -52,7 +53,7 @@ export default Vue.extend({
         this.$nextTick(() => {
             var cy = cytoscape({
                 container: document.getElementById('cy'),
-                elements: elements,
+                elements: fromNeo4j(BIKE_GRAPH),
                 style: style,
                 layout: layout
             });

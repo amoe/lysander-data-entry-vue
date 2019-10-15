@@ -121,6 +121,8 @@ export default Vue.extend({
         axios.post("http://localhost:7474/db/data/transaction/commit", SAMPLE_REQUEST, {headers}).then(r => {
             console.log("result is %o", JSON.stringify(r.data, null, 4));
             this.graph = getGraph(r.data);
+            console.log("graph data is %o", JSON.stringify(this.graph, null, 4));
+            
         }).catch(e => {
             console.log("catch", e);
         });
