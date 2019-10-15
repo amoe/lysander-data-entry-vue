@@ -1,6 +1,10 @@
 <template>
 <div>
   <h1>RowCodingView</h1>
+
+<textarea cols="80" rows="8">{{graph}}</textarea>
+
+
   <div>
     <span>Flight date</span>
     <el-date-picker v-model="value1" type="date" placeholder="Pick a day">
@@ -86,6 +90,8 @@ interface ExtraEvent {
     content: string;
 }
 
+const getGraph = (d: any) => d.results[0].data[0].graph;
+
 export default Vue.extend({
     data() {
         return {
@@ -93,7 +99,8 @@ export default Vue.extend({
             locations: [] as Location[],
             persons: [] as Person[],
             codenames: [] as OperationCodename[],
-            extraEvents: [] as ExtraEvent[]
+            extraEvents: [] as ExtraEvent[],
+            graph: null as any
         };
     },
     created() {
@@ -113,6 +120,7 @@ export default Vue.extend({
 
         axios.post("http://localhost:7474/db/data/transaction/commit", SAMPLE_REQUEST, {headers}).then(r => {
             console.log("result is %o", JSON.stringify(r.data, null, 4));
+            this.graph = getGraph(r.data);
         }).catch(e => {
             console.log("catch", e);
         });
