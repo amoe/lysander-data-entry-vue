@@ -41,8 +41,9 @@ const style = [ // the stylesheet for the graph
 ];
 
 const layout = {
-    name: 'grid',
-    rows: 1
+    name: 'random',
+    rows: 1,
+    fit: true
 };
 
 
