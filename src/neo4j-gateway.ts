@@ -1,6 +1,12 @@
 import neo4j from 'neo4j-driver';
 import { Driver } from 'neo4j-driver/types/v1/index'
 
+// Works fine
+const CYPHER_QUERY = `
+CREATE (p:Person {name: {name}})
+RETURN p
+`;
+
 
 export class Neo4jGateway {
     hostname: string;
@@ -26,7 +32,7 @@ export class Neo4jGateway {
         console.log("I would submit something");
         var session = this.driver!.session();
 
-        session.run('CREATE (p:Person {name: {name}}) RETURN p', { 'name': name }).then((result) => {
+        session.run(CYPHER_QUERY, { 'name': name }).then((result) => {
             result.records.forEach(function(record) {
                 console.log(record.get('p'));
             })

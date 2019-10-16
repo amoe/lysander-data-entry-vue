@@ -13,43 +13,50 @@ Cypher query: <textarea rows="4" cols=50 id="cypher" v-model="query"></textarea>
   </div>
 </template>
 <script lang="ts">
-import Vue from 'vue';
+    import Vue from 'vue';
 import Neovis from 'neovis.js';
 import {NEO4J_HOSTNAME, NEO4J_USERNAME, NEO4J_PASSWORD} from '@/configuration';
 import {Loading} from 'element-ui';
 
-var config = {
-    container_id: "viz",
-    server_url: "bolt://" + NEO4J_HOSTNAME,
-    server_user: NEO4J_USERNAME,
-    server_password: NEO4J_PASSWORD,
-    labels: {
-        "Character": {
-            "caption": "name",
-            "size": "pagerank",
-            "community": "community"
-        }
-    },
-    relationships: {
-        // "HAS": {
-        //     "thickness": 0,
-        //     "caption": false
-        // }
-    },
-    initial_cypher: "MATCH (n)-[r:INTERACTS]->(m) RETURN *"
-};
+const ENTIRE_GRAPH_QUERY = `MATCH (n) OPTIONAL MATCH (n)-[r]->() RETURN n, r`;
+
+
+function makeConfig(initialCypher: string) {
+    return  {
+        container_id: "viz",
+        server_url: "bolt://" + NEO4J_HOSTNAME,
+        server_user: NEO4J_USERNAME,
+        server_password: NEO4J_PASSWORD,
+        labels: {
+            "Character": {
+                "caption": "name",
+                "size": "pagerank",
+                "community": "community"
+            }
+        },
+        relationships: {
+            // "HAS": {
+            //     "thickness": 0,
+            //     "caption": false
+            // }
+        },
+        initial_cypher: initialCypher
+    };
+}
 
 
 export default Vue.extend({
     data() {
         return {
-            query: "MATCH (n)-[r:HAS]->(m) RETURN *" as string,
+            query: ENTIRE_GRAPH_QUERY as string,
             viz: null as any
         };
     },
-    mounted() {
+    created() {
+        // Works fine to put this in created, not sure if it actually improved time
+        // though
         this.$nextTick(() => {
-            this.viz = new Neovis(config);
+            this.viz = new Neovis(makeConfig(this.query));
             this.viz.registerOnEvent('completed', (event: any) => {
                 console.log("completed event fired");
                 Loading.service({fullscreen: true}).close();
