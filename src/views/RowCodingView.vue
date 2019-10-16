@@ -68,6 +68,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import {Neo4jGateway} from '@/neo4j-gateway';
+import {NEO4J_HOSTNAME, NEO4J_USERNAME, NEO4J_PASSWORD} from '@/configuration';
 
 interface Location {
     content: string;
@@ -103,7 +104,9 @@ export default Vue.extend({
             codenames: [] as OperationCodename[],
             extraEvents: [] as ExtraEvent[],
             graph: null as any,
-            gateway: new Neo4jGateway('localhost', 'neo4j', 'password')
+            gateway: new Neo4jGateway(
+                NEO4J_HOSTNAME, NEO4J_USERNAME, NEO4J_PASSWORD
+            )
         };
     },
     created() {

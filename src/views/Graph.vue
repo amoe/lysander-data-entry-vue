@@ -13,14 +13,16 @@ Cypher query: <textarea rows="4" cols=50 id="cypher" v-model="query"></textarea>
   </div>
 </template>
 <script lang="ts">
-    import Vue from 'vue';
+import Vue from 'vue';
 import Neovis from 'neovis.js';
+import {NEO4J_HOSTNAME, NEO4J_USERNAME, NEO4J_PASSWORD} from '@/configuration';
+import {Loading} from 'element-ui';
 
 var config = {
     container_id: "viz",
-    server_url: "bolt://localhost:7687",
-    server_user: "neo4j",
-    server_password: "password",
+    server_url: "bolt://" + NEO4J_HOSTNAME,
+    server_user: NEO4J_USERNAME,
+    server_password: NEO4J_PASSWORD,
     labels: {
         "Character": {
             "caption": "name",
@@ -48,6 +50,10 @@ export default Vue.extend({
     mounted() {
         this.$nextTick(() => {
             this.viz = new Neovis(config);
+            this.viz.registerOnEvent('completed', (event: any) => {
+                console.log("completed event fired");
+                Loading.service({fullscreen: true}).close();
+            });
             this.viz.render();   // initial render call is needed for some unknown reason
         });
     },
@@ -55,7 +61,9 @@ export default Vue.extend({
         draw() {
             console.log("i wanna draw");
 
+            const loading = Loading.service({fullscreen: true});
             this.viz.renderWithCypher(this.query);
+            console.log(this.viz._network);
         }
     }
 });
