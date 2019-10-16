@@ -60,13 +60,14 @@
     </ul>
   </div>
   <el-button type="primary" icon="el-icon-plus" v-on:click="addExtraEvent">Extra Event</el-button>
+
+
+  <el-button v-on:click="submit">Submit</el-button>
 </div>
 </template>
 <script lang="ts">
 import Vue from 'vue';
-import axios from 'axios';
-import {SAMPLE_REQUEST} from '@/sample-request';
-import Neovis from 'neovis.js';
+import {Neo4jGateway} from '@/neo4j-gateway';
 
 interface Location {
     content: string;
@@ -101,32 +102,12 @@ export default Vue.extend({
             persons: [] as Person[],
             codenames: [] as OperationCodename[],
             extraEvents: [] as ExtraEvent[],
-            graph: null as any
+            graph: null as any,
+            gateway: new Neo4jGateway('localhost', 'neo4j', 'password')
         };
     },
     created() {
-        console.log("inside row coding view axios is %o", axios);
-
-        const headers = {
-            'Authorization': window.btoa("neo4j:password")
-        };
-
-        axios.get("http://localhost:7474/user/neo4j", {headers}).then(r => {
-            console.log("then");
-//            this.$notify.info({title: "neo4j", message: r.data});
-            // it works
-        }).catch(e => {
-            console.log("catch", e);
-        });
-
-        axios.post("http://localhost:7474/db/data/transaction/commit", SAMPLE_REQUEST, {headers}).then(r => {
-            console.log("result is %o", JSON.stringify(r.data, null, 4));
-            this.graph = getGraph(r.data);
-            console.log("graph data is %o", JSON.stringify(this.graph, null, 4));
-            
-        }).catch(e => {
-            console.log("catch", e);
-        });
+        console.log("gateway is %o", this.gateway);
     },
     methods: {
         addLocation() {
@@ -149,6 +130,9 @@ export default Vue.extend({
             this.extraEvents.push({
                 content: ""
             });
+        },
+        submit() {
+            this.gateway.submit();
         }
     },
     computed: {
