@@ -66,6 +66,7 @@
 import Vue from 'vue';
 import axios from 'axios';
 import {SAMPLE_REQUEST} from '@/sample-request';
+import Neovis from 'neovis.js';
 
 interface Location {
     content: string;
