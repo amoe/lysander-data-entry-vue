@@ -108,6 +108,7 @@ export default Vue.extend({
     },
     created() {
         console.log("gateway is %o", this.gateway);
+        this.gateway.initialize();
     },
     methods: {
         addLocation() {
@@ -132,7 +133,7 @@ export default Vue.extend({
             });
         },
         submit() {
-            this.gateway.submit();
+            this.gateway.submit('fry');
         }
     },
     computed: {

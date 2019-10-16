@@ -1,36 +1,40 @@
 import neo4j from 'neo4j-driver';
+import { Driver } from 'neo4j-driver/types/v1/index'
+
 
 export class Neo4jGateway {
     hostname: string;
     username: string;
     password: string;
+    driver: Driver | null;
 
     constructor(hostname: string, username: string, password: string) {
         this.hostname = hostname;
         this.username = username;
         this.password = password;
+        this.driver = null;
     }
 
-    submit(): void {
-        console.log("I would submit something");
-        var driver = neo4j.driver(
+    initialize(): void {
+        this.driver = neo4j.driver(
             'bolt://' + this.hostname,
             neo4j.auth.basic(this.username, this.password)
         );
-        console.log(driver);
-        var session = driver.session();
+    }
 
-        session.run('MATCH (n) RETURN n', {}).then((result) => {
+    submit(name: string): void {
+        console.log("I would submit something");
+        var session = this.driver!.session();
+
+        session.run('CREATE (p:Person {name: {name}}) RETURN p', { 'name': name }).then((result) => {
             result.records.forEach(function(record) {
-                console.log(record.get('n'));
+                console.log(record.get('p'));
             })
             session.close()
-            driver.close();
-        }).catch(function(error) {
+            this.driver!.close();
+        }).catch((error) => {
             console.log("error is %o", error);
-            driver.close();
+            this.driver!.close();
         });
-
-
     }
 }
