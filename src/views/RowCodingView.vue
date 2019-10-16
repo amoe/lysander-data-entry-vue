@@ -69,31 +69,13 @@
 import Vue from 'vue';
 import {Neo4jGateway} from '@/neo4j-gateway';
 import {NEO4J_HOSTNAME, NEO4J_USERNAME, NEO4J_PASSWORD} from '@/configuration';
-
-interface Location {
-    content: string;
-}
-
-enum Role {
-    Agent = "agent"
-}
-
-
-interface Person {
-    name: string;
-    role: Role | null;
-}
-
-// Really it should just be a string, but Vue wants an object.
-interface OperationCodename {
-    content: string;
-};
-
-interface ExtraEvent {
-    content: string;
-}
+import {
+    INTERFACES_FILE_VERSION, Role, AggregatedForm, Location, ExtraEvent,
+    OperationCodename, Person
+} from '@/interfaces';
 
 const getGraph = (d: any) => d.results[0].data[0].graph;
+
 
 export default Vue.extend({
     data() {
@@ -110,7 +92,7 @@ export default Vue.extend({
         };
     },
     created() {
-        console.log("gateway is %o", this.gateway);
+        console.log("RowCodingView: using interfaces version %o", INTERFACES_FILE_VERSION);
         this.gateway.initialize();
     },
     methods: {
@@ -135,8 +117,26 @@ export default Vue.extend({
                 content: ""
             });
         },
+        gatherFormData(): AggregatedForm {
+            return {
+                date: this.value1,
+                codenames: this.codenames,
+                persons: this.persons,
+                locations: this.locations,
+                extraEvents: this.extraEvents
+            }
+        },
         submit() {
-            this.gateway.submit('fry');
+            const formData = this.gatherFormData();
+            console.log(formData);
+
+            this.gateway.submitModel(formData).then(result => {
+                const n = result.summary.counters.nodesCreated();
+                const r = result.summary.counters.relationshipsCreated()
+                this.$notify.info({title:'foo', message: `created ${n} nodes, ${r} relationships`});
+            }).catch(error => {
+                this.$notify.error({title: 'bar', message: error.message});
+            });
         }
     },
     computed: {
