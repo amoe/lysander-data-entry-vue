@@ -23,6 +23,5 @@ const SAMPLE_FORM_DATA: AggregatedForm = {
 describe('transform', () => {
     it('does the happy path', () => {
         const actualResult = toNeo4jParameters(SAMPLE_FORM_DATA);
-        //        expect(2 + 2).toEqual(4);
     });
 }); 

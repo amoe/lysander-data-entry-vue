@@ -4,19 +4,28 @@ import {
 
 console.log(INTERFACES_FILE_VERSION);
 
+import uuidv4 from 'uuid/v4';
+
 
 export function toNeo4jParameters(form: AggregatedForm): ModelInsert {
     return [
         {
-            cypherId: 'createPerson',
+            cypherId: 'createFlight',
             queryParameters: {
-                name: 'fry'
+                date: new Date('1940-10-19'),
+                codenames: ['Felix I', 'SIS no 1']
             }
         },
         {
             cypherId: 'createPerson',
             queryParameters: {
-                name: 'leela'
+                name: 'Philip Schneidau',
+            }
+        },
+        {
+            cypherId: 'createAlias',
+            queryParameters: {
+                alias: 'Felix'
             }
         }
     ];
