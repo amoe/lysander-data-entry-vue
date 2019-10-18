@@ -42,6 +42,8 @@ const MULTIPLE_STATEMENT_DEMO = [
     'CREATE (p:Person {name: "Leela"})'
 ];
 
+const FOREACH_DEMO = 'FOREACH (name IN {nameList} | CREATE (p:Person {name: name}))';
+
 export class Neo4jGateway {
     hostname: string;
     username: string;
@@ -96,20 +98,22 @@ export class Neo4jGateway {
         return this.session!.run(MODEL_CYPHER);
     }
 
-    demoMultiStatement(): void {
+    demoMultiStatement(): Result {
         // Promise.all returns a promise that blocks until everything's done.
-        const txResult = this.session!.writeTransaction(tx => {
-            return Promise.all(
-                MULTIPLE_STATEMENT_DEMO.map(cypher => tx.run(cypher))
-            );
-        });
+        // const txResult = this.session!.writeTransaction(tx => {
+        //     return Promise.all(
+        //         MULTIPLE_STATEMENT_DEMO.map(cypher => tx.run(cypher))
+        //     );
+        // });
 
-        txResult.then((r: StatementResult[]) => {
-            console.log("r is %o", r);
+        // txResult.then((r: StatementResult[]) => {
+        //     console.log("r is %o", r);
 
-        }).catch(e => {
-            console.log("e is %o", e);
-        });
+        // }).catch(e => {
+        //     console.log("e is %o", e);
+        // });
+
+        return this.session!.run(FOREACH_DEMO, { nameList: ['fry', 'leela'] });
     }
 
     clearGraph(): Result {

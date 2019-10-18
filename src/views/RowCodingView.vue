@@ -129,17 +129,17 @@ export default Vue.extend({
             }
         },
         submit() {
-            // const formData = this.gatherFormData();
-            // console.log(formData);
+            const formData = this.gatherFormData();
+            console.log(formData);
 
-            // this.gateway.submitModel(formData).then(result => {
-            //     const n = result.summary.counters.nodesCreated();
-            //     const r = result.summary.counters.relationshipsCreated()
-            //     this.$notify.info({title:'foo', message: `created ${n} nodes, ${r} relationships`});
-            // }).catch(error => {
-            //     this.$notify.error({title: 'bar', message: error.message});
-            // });
-            this.gateway.demoMultiStatement();
+            this.gateway.demoMultiStatement().then(result => {
+                const n = result.summary.counters.nodesCreated();
+                const r = result.summary.counters.relationshipsCreated()
+                this.$notify.info({title:'foo', message: `created ${n} nodes, ${r} relationships`});
+            }).catch(error => {
+                this.$notify.error({title: 'bar', message: error.message});
+            });
+//            this.gateway.demoMultiStatement();
         },
         clearGraph() {
             this.gateway.clearGraph().then(result => {
