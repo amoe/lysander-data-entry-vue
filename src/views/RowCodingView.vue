@@ -2,6 +2,8 @@
 <div>
   <h1>RowCodingView</h1>
 
+  <button v-on:click="clearGraph">Clear graph</button>
+
 <textarea cols="80" rows="8">{{graph}}</textarea>
 
 
@@ -127,13 +129,21 @@ export default Vue.extend({
             }
         },
         submit() {
-            const formData = this.gatherFormData();
-            console.log(formData);
+            // const formData = this.gatherFormData();
+            // console.log(formData);
 
-            this.gateway.submitModel(formData).then(result => {
-                const n = result.summary.counters.nodesCreated();
-                const r = result.summary.counters.relationshipsCreated()
-                this.$notify.info({title:'foo', message: `created ${n} nodes, ${r} relationships`});
+            // this.gateway.submitModel(formData).then(result => {
+            //     const n = result.summary.counters.nodesCreated();
+            //     const r = result.summary.counters.relationshipsCreated()
+            //     this.$notify.info({title:'foo', message: `created ${n} nodes, ${r} relationships`});
+            // }).catch(error => {
+            //     this.$notify.error({title: 'bar', message: error.message});
+            // });
+            this.gateway.demoMultiStatement();
+        },
+        clearGraph() {
+            this.gateway.clearGraph().then(result => {
+                this.$notify.info({title:'foo', message: `clear succeeded`});
             }).catch(error => {
                 this.$notify.error({title: 'bar', message: error.message});
             });

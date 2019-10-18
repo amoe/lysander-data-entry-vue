@@ -1,9 +1,11 @@
 import neo4j from 'neo4j-driver';
-import { Driver, Session, Result } from 'neo4j-driver/types/v1/index'
+import { Driver, Session, Result, StatementResult } from 'neo4j-driver/types/v1/index'
 import {
     INTERFACES_FILE_VERSION, AggregatedForm
 } from '@/interfaces';
 
+
+const CLEAR_CYPHER = `MATCH (n) DETACH DELETE n`;
 
 // Works fine
 const CYPHER_QUERY = `
@@ -35,6 +37,10 @@ compass damaged inducing fuel breakdown"}),
        (f)-[:HAS_SUB_EVENT]->(e);
 `;
 
+const MULTIPLE_STATEMENT_DEMO = [
+    'CREATE (p:Person {name: "Fry"})',
+    'CREATE (p:Person {name: "Leela"})'
+];
 
 export class Neo4jGateway {
     hostname: string;
@@ -86,9 +92,29 @@ export class Neo4jGateway {
     // A Result is actually a promise although it doesn't look like it.
     submitModel(formData: AggregatedForm): Result {
         console.log("received form data %o", formData);
-        console.log(
-            this.checkInitialized();
+        this.checkInitialized();
         return this.session!.run(MODEL_CYPHER);
+    }
+
+    demoMultiStatement(): void {
+        // Promise.all returns a promise that blocks until everything's done.
+        const txResult = this.session!.writeTransaction(tx => {
+            return Promise.all(
+                MULTIPLE_STATEMENT_DEMO.map(cypher => tx.run(cypher))
+            );
+        });
+
+        txResult.then((r: StatementResult[]) => {
+            console.log("r is %o", r);
+
+        }).catch(e => {
+            console.log("e is %o", e);
+        });
+    }
+
+    clearGraph(): Result {
+        this.checkInitialized();
+        return this.session!.run(CLEAR_CYPHER);
     }
 
     destroy(): void {
