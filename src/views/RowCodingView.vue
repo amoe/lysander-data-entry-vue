@@ -75,6 +75,7 @@ import {
     INTERFACES_FILE_VERSION, Role, AggregatedForm, Location, ExtraEvent,
     OperationCodename, Person
 } from '@/interfaces';
+import {toNeo4jParameters} from '@/transform';
 
 const getGraph = (d: any) => d.results[0].data[0].graph;
 
@@ -132,14 +133,14 @@ export default Vue.extend({
             const formData = this.gatherFormData();
             console.log(formData);
 
-            this.gateway.demoMultiStatement().then(result => {
-                const n = result.summary.counters.nodesCreated();
-                const r = result.summary.counters.relationshipsCreated()
-                this.$notify.info({title:'foo', message: `created ${n} nodes, ${r} relationships`});
+            this.gateway.submitModel(toNeo4jParameters(formData)).then(result => {
+                // const n = result.summary.counters.nodesCreated();
+                // const r = result.summary.counters.relationshipsCreated()
+                // this.$notify.info({title:'foo', message: `created ${n} nodes, ${r} relationships`});
+                this.$notify.info({title:'foo', message: "Win"});
             }).catch(error => {
                 this.$notify.error({title: 'bar', message: error.message});
             });
-//            this.gateway.demoMultiStatement();
         },
         clearGraph() {
             this.gateway.clearGraph().then(result => {

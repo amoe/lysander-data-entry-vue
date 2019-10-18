@@ -30,9 +30,12 @@ export interface ExtraEvent {
     content: string;
 }
 
-export interface Neo4jParameters {
+export interface ModelInsertSpec {
+    cypherId: string;
+    queryParameters: object;
 }
 
+export type ModelInsert = ModelInsertSpec[]
 
 // Stupid hack to make webpack reload the interfaces properly
 export const INTERFACES_FILE_VERSION = 1;

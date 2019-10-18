@@ -1,8 +1,9 @@
 import neo4j from 'neo4j-driver';
 import { Driver, Session, Result, StatementResult } from 'neo4j-driver/types/v1/index'
 import {
-    INTERFACES_FILE_VERSION, AggregatedForm
+    INTERFACES_FILE_VERSION, AggregatedForm, ModelInsert, ModelInsertSpec
 } from '@/interfaces';
+import { QUERY_DEFINITIONS } from '@/cypher';
 
 
 const CLEAR_CYPHER = `MATCH (n) DETACH DELETE n`;
@@ -92,28 +93,26 @@ export class Neo4jGateway {
     }
 
     // A Result is actually a promise although it doesn't look like it.
-    submitModel(formData: AggregatedForm): Result {
-        console.log("received form data %o", formData);
+    submitModel(modelInfo: ModelInsert): Promise<StatementResult[]> {
+        console.log("received form data %o", modelInfo);
+
+        // So basically it should be a key for a cypher query and a 
         this.checkInitialized();
-        return this.session!.run(MODEL_CYPHER);
-    }
 
-    demoMultiStatement(): Result {
-        // Promise.all returns a promise that blocks until everything's done.
-        // const txResult = this.session!.writeTransaction(tx => {
-        //     return Promise.all(
-        //         MULTIPLE_STATEMENT_DEMO.map(cypher => tx.run(cypher))
-        //     );
-        // });
+        // What are we going to do?
 
-        // txResult.then((r: StatementResult[]) => {
-        //     console.log("r is %o", r);
+        const txResult = this.session!.writeTransaction(tx => {
+            return Promise.all(
+                modelInfo.map((m: ModelInsertSpec) => {
+                    return tx.run(
+                        QUERY_DEFINITIONS[m.cypherId],
+                        m.queryParameters
+                    );
+                })
+            );
+        });
 
-        // }).catch(e => {
-        //     console.log("e is %o", e);
-        // });
-
-        return this.session!.run(FOREACH_DEMO, { nameList: ['fry', 'leela'] });
+        return txResult;
     }
 
     clearGraph(): Result {
