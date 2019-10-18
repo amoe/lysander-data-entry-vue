@@ -86,7 +86,8 @@ export class Neo4jGateway {
     // A Result is actually a promise although it doesn't look like it.
     submitModel(formData: AggregatedForm): Result {
         console.log("received form data %o", formData);
-        this.checkInitialized();
+        console.log(
+            this.checkInitialized();
         return this.session!.run(MODEL_CYPHER);
     }
 

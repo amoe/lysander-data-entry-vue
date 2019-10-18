@@ -11,7 +11,8 @@ export interface Location {
 }
 
 export enum Role {
-    Agent = "agent"
+    Agent = "agent",
+    Pilot = "pilot"
 }
 
 
@@ -28,6 +29,10 @@ export interface OperationCodename {
 export interface ExtraEvent {
     content: string;
 }
+
+export interface Neo4jParameters {
+}
+
 
 // Stupid hack to make webpack reload the interfaces properly
 export const INTERFACES_FILE_VERSION = 1;
