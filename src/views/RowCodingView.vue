@@ -1,18 +1,21 @@
 <template>
 <div>
   <h1>RowCodingView</h1>
-
-  <workspace :table-data="tableData"></workspace>
-
+  
+  <workspace :table-data="tableData" :dialog-visible="dialogVisible"></workspace>
+  
   <button v-on:click="clearGraph">Clear graph</button>
-
+  
   <div>
     <span>Flight date</span>
     <el-date-picker v-model="value1" type="date" placeholder="Pick a day">
     </el-date-picker>
   </div>
-
+  
   <h2>Codenames</h2>
+  
+  <p>This refers to the codename of the specific mission.</p>
+  
   <div class="codenames">
     <ul>
       <li v-for="codename in codenames">
@@ -21,24 +24,24 @@
     </ul>
   </div>
   <el-button type="primary" icon="el-icon-plus" v-on:click="addCodename">Codename</el-button>
-
+  
   
   <h2>Persons</h2>
   <div class="persons">
-    <ul>
-      <li v-for="person in persons">
-        <el-input v-model="person.name"></el-input>
-        <el-select v-model="person.role" placeholder="Select">
-          <el-option v-for="item in availableRoles"
-                     :key="item.value"
-                     :label="item.label"
-                     :value="item.value">
-          </el-option>
-        </el-select>
-      </li>
-    </ul>
+    <el-table :data="persons">
+      <el-table-column prop="name" label="Name"/>
+      
+      <el-table-column label="Operations">
+        <template slot-scope="scope">
+          <el-button size="mini"
+                     v-on:click="popAliases(scope.$index)">Assign Aliases</el-button>
+        </template>
+      </el-table-column>
+      
+    </el-table>
+    <el-button v-on:click="addPerson">Add</el-button>
   </div>
-  <el-button type="primary" icon="el-icon-plus" v-on:click="addPerson">Person</el-button>
+  
 
 
   <h2>Locations</h2>
@@ -88,6 +91,7 @@ export default Vue.extend({
     components: {Workspace},
     data() {
         return {
+            dialogVisible: false,
             tableData: [
                 {name: 'fry', age: 29}
             ],
@@ -107,6 +111,9 @@ export default Vue.extend({
         this.gateway.initialize();
     },
     methods: {
+        popAliases() {
+            this.dialogVisible = true;
+        },
         addLocation() {
             this.locations.push({
                 content: ""

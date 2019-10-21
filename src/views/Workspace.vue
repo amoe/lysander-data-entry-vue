@@ -30,10 +30,6 @@
           <el-button v-on:click="dialogVisible = false">OK</el-button>
         </span>
       </el-dialog>
-
-
-
-  <el-button v-on:click="pop">Pop</el-button>
 </div>
 </template>
 
@@ -44,17 +40,16 @@ export default Vue.extend({
     props: {
         tableData: {
             type: Array as () => object[]
+        },
+        dialogVisible: {
+            type: Boolean
         }
     },
     data() {
         return {
-            dialogVisible: false,
         };
     },
     methods: {
-        pop() {
-            this.dialogVisible = true;
-        },
         handleDelete(index: number) {
             this.tableData.splice(index, 1);
         },
