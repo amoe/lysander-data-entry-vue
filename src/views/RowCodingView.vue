@@ -1,13 +1,13 @@
 <template>
 <div>
   <h1>RowCodingView</h1>
-
   
-  <workspace v-if="selectedIndex !== null"
-             :parent-list="persons" :dialog-visible="dialogVisible"
-             :selected-index="selectedIndex"
-             sublist-property="aliases"
-             v-on:closed="onDialogClosed"></workspace>
+  
+  <list-dialog v-if="selectedIndex !== null"
+               :parent-list="persons" :dialog-visible="dialogVisible"
+               :selected-index="selectedIndex"
+               sublist-property="aliases"
+               v-on:closed="onDialogClosed"></list-dialog>
   
   <button v-on:click="clearGraph">Clear graph</button>
   
@@ -86,7 +86,7 @@ import {
 } from '@/interfaces';
 import {  StatementResult } from 'neo4j-driver/types/v1/index';
 import {toNeo4jParameters} from '@/transform';
-import Workspace from '@/views/Workspace.vue';
+import ListDialog from '@/components/ListDialog.vue';
 import uuidv4 from 'uuid/v4';
 
 const getGraph = (d: any) => d.results[0].data[0].graph;
@@ -95,7 +95,7 @@ const REAL_ID_GENERATOR = () => uuidv4();
 
 
 export default Vue.extend({
-    components: {Workspace},
+    components: {ListDialog},
     data() {
         return {
             dialogVisible: false,
