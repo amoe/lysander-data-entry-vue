@@ -6,7 +6,8 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+    import Vue from 'vue';
+import axios from 'axios';
 
 export default Vue.extend({
     data() {
@@ -14,7 +15,11 @@ export default Vue.extend({
         };
     },
     created() {
-//        console.log(xlsx.read);
+        axios.get("/sensitive/tillet_converted.json").then(r => {
+            console.log("response is %o", r);
+        }).catch(e => {
+            console.log("error is %o", e);
+        });
     },
     methods: {
     },
