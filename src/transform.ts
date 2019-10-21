@@ -1,5 +1,5 @@
 import {
-    INTERFACES_FILE_VERSION, AggregatedForm, ModelInsert, IdGenerator
+    INTERFACES_FILE_VERSION, AggregatedForm, ModelInsert, IdGenerator, ModelInsertSpec
 } from '@/interfaces';
 
 console.log(INTERFACES_FILE_VERSION);
@@ -8,57 +8,33 @@ export function toNeo4jParameters(form: AggregatedForm, idGenerator: IdGenerator
     // XXX: it's not testable to call all of these methods here
     // ordering is important
     const flightId = idGenerator();
-    const personId = idGenerator();
-    const aliasId = idGenerator();
-    const aliasContextId = idGenerator();
 
-
-
-
-    return [
+    // Under this model a row always declares a flight
+    const base: ModelInsert = [
         {
             cypherId: 'createFlight',
             queryParameters: {
                 flightId: flightId,
-                date: '1940-10-19',
-                codenames: ['Felix I', 'SIS no 1']
-            }
-        },
-        {
-            cypherId: 'createPerson',
-            queryParameters: {
-                name: 'Philip Schneidau',
-                id: personId
-            }
-        },
-        {
-            cypherId: 'createAlias',
-            queryParameters: {
-                alias: 'Felix',
-                id: aliasId
-            }
-        },
-        {
-            cypherId: 'createAliasContext',
-            queryParameters: {
-                id: aliasContextId,
-                aliasId,
-                personId,
-                flightId
+                date: form.date,
+                codenames: form.codenames.map(n => n.content)
             }
         }
     ];
-}
 
-// export function toNeo4jParameters(form: AggregatedForm, idGenerator: IdGenerator): ModelInsert {
-//     return [
-//         {
-//             cypherId: 'txSemanticsTester1',
-//             queryParameters: {}
-//         },
-//         {
-//             cypherId: 'txSemanticsTester2',
-//             queryParameters: {}
-//         },
-//     ];
-// }
+    // XXX: Aliases don't make sense in this model
+    // Why, well for one we don't have them in the form itself!
+
+    form.persons.forEach(p => {
+        const personSpec: ModelInsertSpec = {
+            cypherId: 'createPerson',
+            queryParameters: {
+                name: p.name,
+                id: idGenerator()
+            }
+        };
+
+        base.push(personSpec);
+    });
+
+    return base;
+}
