@@ -159,6 +159,17 @@ export class Neo4jGateway {
         return this.session!.run(CLEAR_CYPHER);
     }
 
+    createSourceRows(object[] rows): Result {
+        // Some clever thing to load many many rows at once.
+    }
+
+    markRowProcessed(string rowId): Result {
+    }
+
+    // NB: Do we want to unwrap this into a regular promise or something
+    getNextUnprocessedRow(): Result {
+    }
+
     destroy(): void {
         if (this.session !== null) {
             this.session.close();
