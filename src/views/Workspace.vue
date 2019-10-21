@@ -1,6 +1,7 @@
 <template>
 <div>
   <h1>ws</h1>
+
 </div>
 </template>
 
@@ -11,6 +12,9 @@ export default Vue.extend({
     data() {
         return {
         };
+    },
+    created() {
+//        console.log(xlsx.read);
     },
     methods: {
     },
