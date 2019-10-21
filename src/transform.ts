@@ -1,18 +1,21 @@
 import {
-    INTERFACES_FILE_VERSION, AggregatedForm, ModelInsert
+    INTERFACES_FILE_VERSION, AggregatedForm, ModelInsert, IdGenerator
 } from '@/interfaces';
 
 console.log(INTERFACES_FILE_VERSION);
 
-import uuidv4 from 'uuid/v4';
+export function toNeo4jParameters(form: AggregatedForm, idGenerator: IdGenerator): ModelInsert {
+    // XXX: it's not testable to call all of these methods here
+    const personId = idGenerator();
+    const aliasId = idGenerator();
+    const aliasContextId = idGenerator();
+    const flightId = idGenerator();
 
-
-export function toNeo4jParameters(form: AggregatedForm): ModelInsert {
     return [
         {
             cypherId: 'createFlight',
             queryParameters: {
-                date: new Date('1940-10-19'),
+                date: '1940-10-19',
                 codenames: ['Felix I', 'SIS no 1']
             }
         },
@@ -20,12 +23,23 @@ export function toNeo4jParameters(form: AggregatedForm): ModelInsert {
             cypherId: 'createPerson',
             queryParameters: {
                 name: 'Philip Schneidau',
+                id: personId
             }
         },
         {
             cypherId: 'createAlias',
             queryParameters: {
-                alias: 'Felix'
+                alias: 'Felix',
+                id: aliasId
+            }
+        },
+        {
+            cypherId: 'createAliasContext',
+            queryParameters: {
+                id: aliasContextId,
+                aliasId,
+                personId,
+                flightId
             }
         }
     ];

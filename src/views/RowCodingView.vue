@@ -76,8 +76,11 @@ import {
     OperationCodename, Person
 } from '@/interfaces';
 import {toNeo4jParameters} from '@/transform';
+import uuidv4 from 'uuid/v4';
 
 const getGraph = (d: any) => d.results[0].data[0].graph;
+
+const REAL_ID_GENERATOR = () => uuidv4();
 
 
 export default Vue.extend({
@@ -130,17 +133,20 @@ export default Vue.extend({
             }
         },
         submit() {
-            const formData = this.gatherFormData();
-            console.log(formData);
+            this.$notify.info({title: 'status', message: 'running'});
+            this.gateway.testTransactionSemanticsImplicitSequencing(10000);
+            // const formData = this.gatherFormData();
+            // console.log(formData);
 
-            this.gateway.submitModel(toNeo4jParameters(formData)).then(result => {
-                // const n = result.summary.counters.nodesCreated();
-                // const r = result.summary.counters.relationshipsCreated()
-                // this.$notify.info({title:'foo', message: `created ${n} nodes, ${r} relationships`});
-                this.$notify.info({title:'foo', message: "Win"});
-            }).catch(error => {
-                this.$notify.error({title: 'bar', message: error.message});
-            });
+            // this.gateway.submitModel(toNeo4jParameters(formData, REAL_ID_GENERATOR)).then(result => {
+            //     console.log(result);
+            //     // const n = result.summary.counters.nodesCreated();
+            //     // const r = result.summary.counters.relationshipsCreated()
+            //     // this.$notify.info({title:'foo', message: `created ${n} nodes, ${r} relationships`});
+            //     this.$notify.info({title:'foo', message: "Win"});
+            // }).catch(error => {
+            //     this.$notify.error({title: 'bar', message: error.message});
+            // });
         },
         clearGraph() {
             this.gateway.clearGraph().then(result => {

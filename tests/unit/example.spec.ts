@@ -20,8 +20,15 @@ const SAMPLE_FORM_DATA: AggregatedForm = {
 };
 
 
+
+function makeMockedIdGenerator() {
+    var counter = 1;
+    return () => String(counter++);
+}
+
+
 describe('transform', () => {
     it('does the happy path', () => {
-        const actualResult = toNeo4jParameters(SAMPLE_FORM_DATA);
+        const actualResult = toNeo4jParameters(SAMPLE_FORM_DATA, makeMockedIdGenerator());
     });
 }); 

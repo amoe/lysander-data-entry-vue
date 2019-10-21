@@ -4,6 +4,7 @@ import {
     INTERFACES_FILE_VERSION, AggregatedForm, ModelInsert, ModelInsertSpec
 } from '@/interfaces';
 import { QUERY_DEFINITIONS } from '@/cypher';
+import uuidv4 from 'uuid/v4';
 
 
 const CLEAR_CYPHER = `MATCH (n) DETACH DELETE n`;
@@ -113,6 +114,46 @@ export class Neo4jGateway {
         });
 
         return txResult;
+    }
+
+    testTransactionSemanticsImplicitSequencing(i: number): void {
+        if (i === 0) {
+            console.log("done at", new Date());
+        }
+
+        const id = uuidv4();
+        const txResult = this.session!.writeTransaction(tx => {
+            const p1 = tx.run("CREATE (p:Person {id: {id}})", { id });
+            const p2 = tx.run("MATCH (p:Person {id: {id}}) RETURN p.id", { id });
+            return [p1, p2];
+        });
+
+        txResult.then(x => {
+            x[1].then(y => {
+                const val = y.records[0].get('p.id');
+                if (val !== id)
+                    throw new Error("something went wrong");
+
+                this.testTransactionSemanticsImplicitSequencing(i - 1);
+            }).catch(e => {
+                console.log("bad");
+            });
+        }).catch(e => {
+            console.log("bad1");
+        });
+    }
+
+
+    testTransactionSemantics(): void {
+        this.session!.writeTransaction(tx => {
+            tx.run("CREATE (p:Person {id: 1})").then(r => {
+                tx.run("MATCH (p:Person {id: 1}) RETURN p").then(r => {
+                    console.log("success");
+                }).catch(e => {
+                    console.log("inner catch", e);
+                });
+            });
+        });
     }
 
     clearGraph(): Result {
