@@ -1,3 +1,13 @@
+export interface TilletDatum {
+    record_id: number;
+    date: string;
+    landing_zone: string[],
+    references: string[],
+    passengers_out: string[],
+    operation: string[],
+    squadron: string[]
+}
+
 export interface AggregatedForm {
     date: Date,
     codenames: OperationCodename[],

@@ -1,32 +1,36 @@
 <template>
 <div>
   <h1>ws</h1>
-
-  <textarea cols="80" rows="8">{{stuff}}</textarea>
-
-
+  
+  <el-table :data="tilletData" :span-method="mySpanMethod">
+    <el-table-column prop="record_id" label="Record ID"/>
+    <el-table-column prop="date" label="Date"/>
+  </el-table>
 </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import axios from 'axios';
+import {TilletDatum} from '@/interfaces';
 
 export default Vue.extend({
     data() {
         return {
-            stuff: null as any
+            tilletData: null as TilletDatum | null
         };
     },
     created() {
         axios.get("/sensitive/tillet_converted.json").then(r => {
-            console.log("response is %o", r);
-            this.stuff = r.data;
+            this.tilletData = r.data;
         }).catch(e => {
             console.log("error is %o", e);
         });
     },
     methods: {
+        mySpanMethod(foo: any) {
+            console.log("span method was called");
+        }
     },
     computed: {
     }
