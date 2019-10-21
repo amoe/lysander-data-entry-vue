@@ -1,6 +1,7 @@
 import {
     INTERFACES_FILE_VERSION, AggregatedForm, ModelInsert, IdGenerator, ModelInsertSpec
 } from '@/interfaces';
+import { getIsoDate } from './date';
 
 console.log(INTERFACES_FILE_VERSION);
 
@@ -15,7 +16,7 @@ export function toNeo4jParameters(form: AggregatedForm, idGenerator: IdGenerator
             cypherId: 'createFlight',
             queryParameters: {
                 flightId: flightId,
-                date: form.date,
+                date: getIsoDate(form.date),
                 codenames: form.codenames.map(n => n.content)
             }
         }
