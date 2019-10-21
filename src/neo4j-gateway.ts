@@ -94,7 +94,7 @@ export class Neo4jGateway {
     }
 
     // A Result is actually a promise although it doesn't look like it.
-    submitModel(modelInfo: ModelInsert): Promise<StatementResult[]> {
+    submitModel(modelInfo: ModelInsert): any {
         console.log("received form data %o", modelInfo);
 
         // So basically it should be a key for a cypher query and a 
@@ -103,14 +103,20 @@ export class Neo4jGateway {
         // What are we going to do?
 
         const txResult = this.session!.writeTransaction(tx => {
-            return Promise.all(
-                modelInfo.map((m: ModelInsertSpec) => {
-                    return tx.run(
-                        QUERY_DEFINITIONS[m.cypherId],
-                        m.queryParameters
-                    );
-                })
-            );
+            return modelInfo.map((m: ModelInsertSpec) => {
+                return tx.run(
+                    QUERY_DEFINITIONS[m.cypherId],
+                    m.queryParameters
+                );
+            })
+        });
+
+        txResult.then(results => {
+            results.forEach(v => {
+                v.then(x => {
+                    console.log(x);
+                });
+            });
         });
 
         return txResult;

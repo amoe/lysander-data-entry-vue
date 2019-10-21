@@ -15,6 +15,7 @@ export function toNeo4jParameters(form: AggregatedForm, idGenerator: IdGenerator
         {
             cypherId: 'createFlight',
             queryParameters: {
+                flightId: flightId,
                 date: '1940-10-19',
                 codenames: ['Felix I', 'SIS no 1']
             }
@@ -44,3 +45,16 @@ export function toNeo4jParameters(form: AggregatedForm, idGenerator: IdGenerator
         }
     ];
 }
+
+// export function toNeo4jParameters(form: AggregatedForm, idGenerator: IdGenerator): ModelInsert {
+//     return [
+//         {
+//             cypherId: 'txSemanticsTester1',
+//             queryParameters: {}
+//         },
+//         {
+//             cypherId: 'txSemanticsTester2',
+//             queryParameters: {}
+//         },
+//     ];
+// }

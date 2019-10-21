@@ -137,11 +137,12 @@ export default Vue.extend({
             this.$notify.info({title:'foo', message: `created ${n} nodes, ${r} relationships`});
         },
         submit() {
-            this.gateway.submitModel(toNeo4jParameters(this.gatherFormData(), REAL_ID_GENERATOR)).then(result => {
-                result.forEach(this.report);
-            }).catch(error => {
-                this.$notify.error({title: 'bar', message: error.message});
-            });
+            // this.gateway.submitModel(toNeo4jParameters(this.gatherFormData(), REAL_ID_GENERATOR)).then(result => {
+            //     result.forEach(this.report);
+            // }).catch(error => {
+            //     this.$notify.error({title: 'bar', message: error.message});
+            // });
+            this.gateway.submitModel(toNeo4jParameters(this.gatherFormData(), REAL_ID_GENERATOR));
         },
         clearGraph() {
             this.gateway.clearGraph().then(result => {
