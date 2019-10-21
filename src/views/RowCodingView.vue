@@ -2,6 +2,8 @@
 <div>
   <h1>RowCodingView</h1>
 
+  <workspace :table-data="tableData"></workspace>
+
   <button v-on:click="clearGraph">Clear graph</button>
 
   <div>
@@ -74,6 +76,7 @@ import {
 } from '@/interfaces';
 import {  StatementResult } from 'neo4j-driver/types/v1/index';
 import {toNeo4jParameters} from '@/transform';
+import Workspace from '@/views/Workspace.vue';
 import uuidv4 from 'uuid/v4';
 
 const getGraph = (d: any) => d.results[0].data[0].graph;
@@ -82,8 +85,12 @@ const REAL_ID_GENERATOR = () => uuidv4();
 
 
 export default Vue.extend({
+    components: {Workspace},
     data() {
         return {
+            tableData: [
+                {name: 'fry', age: 29}
+            ],
             value1: new Date("1940-01-01"),
             locations: [] as Location[],
             persons: [] as Person[],

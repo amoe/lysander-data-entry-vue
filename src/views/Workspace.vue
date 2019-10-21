@@ -41,12 +41,14 @@
 import Vue from 'vue';
 
 export default Vue.extend({
+    props: {
+        tableData: {
+            type: Array as () => object[]
+        }
+    },
     data() {
         return {
             dialogVisible: false,
-            tableData: [
-                {name: 'fry', age: 29}
-            ]
         };
     },
     methods: {
