@@ -6,7 +6,8 @@
   <workspace v-if="selectedIndex !== null"
              :parent-list="persons" :dialog-visible="dialogVisible"
              :selected-index="selectedIndex"
-             sublist-property="aliases"></workspace>
+             sublist-property="aliases"
+             v-on:closed="onDialogClosed"></workspace>
   
   <button v-on:click="clearGraph">Clear graph</button>
   
@@ -172,6 +173,10 @@ export default Vue.extend({
             }).catch(error => {
                 this.$notify.error({title: 'bar', message: error.message});
             });
+        },
+        onDialogClosed() {
+            // necessary
+            this.dialogVisible = false;
         }
     },
     computed: {

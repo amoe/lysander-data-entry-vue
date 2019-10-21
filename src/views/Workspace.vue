@@ -2,7 +2,6 @@
 <div>
   <h1>ws</h1>
   
-  
   <el-dialog title="Help"
              :visible.sync="dialogVisible"
              width="30%">
@@ -25,9 +24,8 @@
     <el-button type="primary" v-on:click="addRow">Add</el-button>
     
     
-    
     <span slot="footer" class="dialog-footer">
-      <el-button v-on:click="dialogVisible = false">OK</el-button>
+      <el-button v-on:click="$emit('closed')">OK</el-button>
     </span>
   </el-dialog>
 </div>
