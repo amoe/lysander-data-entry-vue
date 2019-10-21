@@ -130,7 +130,7 @@ export default Vue.extend({
         },
         addPerson() {
             this.persons.push({
-                name: "",
+                name: "Leela",
                 role: null,
                 aliases: [{name: 'fry'}]
             });
