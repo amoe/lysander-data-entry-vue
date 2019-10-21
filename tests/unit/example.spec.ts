@@ -19,6 +19,40 @@ const SAMPLE_FORM_DATA: AggregatedForm = {
     ]
 };
 
+const EXPECTED_RESULT = [
+    {
+        cypherId: 'createFlight',
+        queryParameters: {
+            flightId: "1",
+            date: '1940-10-19',
+            codenames: ['Felix I', 'SIS no 1']
+        }
+    },
+    {
+        cypherId: 'createPerson',
+        queryParameters: {
+            name: 'Philip Schneidau',
+            id: "2"
+        }
+    },
+    {
+        cypherId: 'createAlias',
+        queryParameters: {
+            alias: 'Felix',
+            id: "3"
+        }
+    },
+    {
+        cypherId: 'createAliasContext',
+        queryParameters: {
+            id: "4",
+            aliasId: "3",
+            personId: "2",
+            flightId: "1"
+        }
+    }
+]
+
 
 
 function makeMockedIdGenerator() {
@@ -30,5 +64,6 @@ function makeMockedIdGenerator() {
 describe('transform', () => {
     it('does the happy path', () => {
         const actualResult = toNeo4jParameters(SAMPLE_FORM_DATA, makeMockedIdGenerator());
+        expect(actualResult).toEqual(EXPECTED_RESULT);
     });
 }); 

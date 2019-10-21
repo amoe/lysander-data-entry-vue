@@ -6,10 +6,14 @@ console.log(INTERFACES_FILE_VERSION);
 
 export function toNeo4jParameters(form: AggregatedForm, idGenerator: IdGenerator): ModelInsert {
     // XXX: it's not testable to call all of these methods here
+    // ordering is important
+    const flightId = idGenerator();
     const personId = idGenerator();
     const aliasId = idGenerator();
     const aliasContextId = idGenerator();
-    const flightId = idGenerator();
+
+
+
 
     return [
         {
