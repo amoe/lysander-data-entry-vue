@@ -72,6 +72,31 @@ export function toNeo4jParameters(form: AggregatedForm, idGenerator: IdGenerator
         base.push(...transformPerson(p, idGenerator, flightId))
     });
 
+    form.locations.forEach(l => {
+        const location = {
+            cypherId: 'createLocation',
+            queryParameters: {
+                flightId: flightId,
+                description: l.content
+            }
+        };
+
+        base.push(location);
+    });
+
+
+    form.extraEvents.forEach(e => {
+        const event = {
+            cypherId: 'createEvent',
+            queryParameters: {
+                flightId: flightId,
+                description: e.content
+            }
+        };
+
+        base.push(event);
+    });
+
     console.log("transformed to %o", base);
 
     return base;

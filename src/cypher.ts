@@ -17,6 +17,14 @@ export const QUERY_DEFINITIONS: QueryRegistry = {
     createFlight: "CREATE (f:Flight {date: {date}, names: {codenames}, id: {flightId}})",
     createAlias: "CREATE (a:Alias {alias: {alias}, id: {id}})",
     createAliasContext: CREATE_ALIAS_CONTEXT,
-    txSemanticsTester1: "CREATE (p:Person {id: 1})",
-    txSemanticsTester2: "MATCH (p:Person {id: 1}) RETURN p.id"    // need to test case
+    createLocation: `
+        MATCH (f:Flight {id: {flightId}})
+        CREATE (l:Location {description: {description}}),
+               (f)-[:ACTUAL_DESTINATION]->(l)
+`,
+    createEvent: `
+        MATCH (f:Flight {id: {flightId}})
+        CREATE (e:Event {description: {description}}),
+               (f)-[:ACTUAL_DESTINATION]->(e)
+`
 };

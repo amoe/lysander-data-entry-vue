@@ -50,6 +50,8 @@
 
 
   <h2>Locations</h2>
+  <p>XXX: Currently assumed to refer to the actual destination of the flight.</p>
+
   <div class="locations">
     <ul>
       <li v-for="location in locations">
