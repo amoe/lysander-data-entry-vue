@@ -16,9 +16,14 @@ export enum Role {
 }
 
 
+export interface Alias {
+    name: string;
+}
+
 export interface Person {
     name: string;
     role: Role | null;
+    aliases: Alias[]
 }
 
 // Really it should just be a string, but Vue wants an object.

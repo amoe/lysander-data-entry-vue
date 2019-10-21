@@ -8,8 +8,8 @@ const SAMPLE_FORM_DATA: AggregatedForm = {
         { content: "SIS no 1" },
     ],
     persons: [
-        { name: "Philip Schneidau", role: Role.Agent },
-        { name: "WJ Farley", role: Role.Pilot }
+        { name: "Philip Schneidau", role: Role.Agent, aliases: [] },
+        { name: "WJ Farley", role: Role.Pilot, aliases: [] }
     ],
     locations: [
         { content: "2.4 km E Montcourt-Fromonville, 4.3 km S Montigny sur Loing, 4.7 km NE Nemours, LZ (48° 18’ 00’’ N – 02° 44’ 00’’ E), Seine & Marne" }

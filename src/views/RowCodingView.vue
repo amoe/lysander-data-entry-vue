@@ -1,8 +1,12 @@
 <template>
 <div>
   <h1>RowCodingView</h1>
+
   
-  <workspace :table-data="tableData" :dialog-visible="dialogVisible"></workspace>
+  <workspace v-if="selectedIndex !== null"
+             :parent-list="persons" :dialog-visible="dialogVisible"
+             :selected-index="selectedIndex"
+             sublist-property="aliases"></workspace>
   
   <button v-on:click="clearGraph">Clear graph</button>
   
@@ -103,7 +107,9 @@ export default Vue.extend({
             graph: null as any,
             gateway: new Neo4jGateway(
                 NEO4J_HOSTNAME, NEO4J_USERNAME, NEO4J_PASSWORD
-            )
+            ),
+            // not really valid
+            selectedIndex: null as number | null
         };
     },
     created() {
@@ -111,8 +117,10 @@ export default Vue.extend({
         this.gateway.initialize();
     },
     methods: {
-        popAliases() {
+        popAliases(index: number) {
+            console.log("picked index %o", index);
             this.dialogVisible = true;
+            this.selectedIndex = index;
         },
         addLocation() {
             this.locations.push({
@@ -122,7 +130,8 @@ export default Vue.extend({
         addPerson() {
             this.persons.push({
                 name: "",
-                role: null
+                role: null,
+                aliases: [{name: 'fry'}]
             });
         },
         addCodename() {
