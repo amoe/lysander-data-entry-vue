@@ -176,9 +176,18 @@ export class Neo4jGateway {
         return txResult;
     }
 
+
+
     search(query: string): Result {
         this.checkInitialized();
-        return this.session!.run("RETURN 42", {});
+
+        const foo = `
+MATCH (n)
+WHERE apoc.text.fuzzyMatch(n.content, {query})
+RETURN n
+`;
+
+        return this.session!.run(foo, { query })
     }
 
     // markRowProcessed(string rowId): Result {

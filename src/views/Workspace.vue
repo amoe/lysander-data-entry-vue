@@ -29,8 +29,18 @@ export default LysanderComponent.extend({
     methods: {
         remoteMethod(query: string) {
             console.log("remote method called with argument %o", query);
+            
+            // so what will be necessary here, just to unlock a search spec
 
-            const result = this.gateway.search(query).then(r => {
+            // basically it needs many things
+            
+            // it needs to be parameterized by:
+            // * a node type
+            // * a text content property name
+            //
+            // that means that we need to reintroduce the canned statement type
+
+            const result = this.gateway.search("fubar").then(r => {
                 console.log(r);
             });
             
