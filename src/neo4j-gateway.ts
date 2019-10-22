@@ -176,6 +176,11 @@ export class Neo4jGateway {
         return txResult;
     }
 
+    search(query: string): Result {
+        this.checkInitialized();
+        return this.session!.run("RETURN 42", {});
+    }
+
     // markRowProcessed(string rowId): Result {
     // }
 

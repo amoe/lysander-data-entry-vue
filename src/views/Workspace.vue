@@ -15,10 +15,11 @@
 </template>
 
 <script lang="ts">
-    import Vue from 'vue';
+import Vue from 'vue';
 import axios from 'axios';
+import {LysanderComponent} from '@/mixins';
 
-export default Vue.extend({
+export default LysanderComponent.extend({
     data() {
         return {
             value9: null as any,
@@ -28,6 +29,11 @@ export default Vue.extend({
     methods: {
         remoteMethod(query: string) {
             console.log("remote method called with argument %o", query);
+
+            const result = this.gateway.search(query).then(r => {
+                console.log(r);
+            });
+            
             this.options4 = [{'label': "Foo", 'value': 'foo'}];
         },
     }
