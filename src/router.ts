@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import RowCodingView from './views/RowCodingView.vue';
 import TilletSpreadsheet from '@/components/TilletSpreadsheet.vue';
 import Sources from '@/views/Sources.vue';
+import AdvancedAdministration from '@/views/AdvancedAdministration.vue';
 
 Vue.use(Router);
 
@@ -17,6 +18,11 @@ export default new Router({
             path: '/sources',
             name: 'sources',
             component: Sources
+        },
+        {
+            path: '/advanced-administration',
+            name: 'advanced-administration',
+            component: AdvancedAdministration
         },
         {
             path: '/tillet-spreadsheet',
