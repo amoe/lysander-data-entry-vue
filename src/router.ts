@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import RowCodingView from './views/RowCodingView.vue';
 import TilletSpreadsheet from '@/components/TilletSpreadsheet.vue';
+import Sources from '@/views/Sources.vue';
 
 Vue.use(Router);
 
@@ -13,8 +14,13 @@ export default new Router({
             component: RowCodingView,
         },
         {
+            path: '/sources',
+            name: 'sources',
+            component: Sources
+        },
+        {
             path: '/tillet-spreadsheet',
-            name: 'home',
+            name: 'tillet-spreadsheet',
             component: TilletSpreadsheet,
         },
         {

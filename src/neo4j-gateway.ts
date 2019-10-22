@@ -159,16 +159,30 @@ export class Neo4jGateway {
         return this.session!.run(CLEAR_CYPHER);
     }
 
-    createSourceRows(object[] rows): Result {
+    createSourceRows(rows: object[]): Promise<StatementResult[]> {
+        this.checkInitialized();
         // Some clever thing to load many many rows at once.
+        const txResult = this.session!.writeTransaction(tx => {
+            return Promise.all(
+                rows.map(row => {
+                    return tx.run(
+                        "CREATE (s:SourceRow {json: {json}})",
+                        { json: JSON.stringify(row) }
+                    );
+                })
+            );
+        });
+
+        return txResult;
     }
 
-    markRowProcessed(string rowId): Result {
-    }
+    // markRowProcessed(string rowId): Result {
+    // }
 
     // NB: Do we want to unwrap this into a regular promise or something
-    getNextUnprocessedRow(): Result {
-    }
+    // getNextUnprocessedRow(): Result {
+
+    // }
 
     destroy(): void {
         if (this.session !== null) {

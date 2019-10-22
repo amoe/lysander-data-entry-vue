@@ -2,7 +2,6 @@
 <div>
   <h1>RowCodingView</h1>
   
-  
   <list-dialog v-if="selectedIndex !== null"
                :parent-list="persons" :dialog-visible="dialogVisible"
                :selected-index="selectedIndex"
@@ -78,12 +77,11 @@
 </template>
 <script lang="ts">
     import Vue from 'vue';
-import {Neo4jGateway} from '@/neo4j-gateway';
-import {NEO4J_HOSTNAME, NEO4J_USERNAME, NEO4J_PASSWORD} from '@/configuration';
 import {
     INTERFACES_FILE_VERSION, Role, AggregatedForm, Location, ExtraEvent,
     OperationCodename, Person
 } from '@/interfaces';
+import { LysanderComponent } from '@/mixins';
 import {  StatementResult } from 'neo4j-driver/types/v1/index';
 import {toNeo4jParameters} from '@/transform';
 import ListDialog from '@/components/ListDialog.vue';
@@ -94,7 +92,7 @@ const getGraph = (d: any) => d.results[0].data[0].graph;
 const REAL_ID_GENERATOR = () => uuidv4();
 
 
-export default Vue.extend({
+export default LysanderComponent.extend({
     components: {ListDialog},
     data() {
         return {
@@ -108,16 +106,12 @@ export default Vue.extend({
             codenames: [] as OperationCodename[],
             extraEvents: [] as ExtraEvent[],
             graph: null as any,
-            gateway: new Neo4jGateway(
-                NEO4J_HOSTNAME, NEO4J_USERNAME, NEO4J_PASSWORD
-            ),
             // not really valid
             selectedIndex: null as number | null
         };
     },
     created() {
         console.log("RowCodingView: using interfaces version %o", INTERFACES_FILE_VERSION);
-        this.gateway.initialize();
     },
     methods: {
         popAliases(index: number) {
