@@ -18,6 +18,7 @@
 import Vue from 'vue';
 import axios from 'axios';
 import {LysanderComponent} from '@/mixins';
+import {FuzzySearchStatement} from '@/canned-statements';
 
 export default LysanderComponent.extend({
     data() {
@@ -40,7 +41,10 @@ export default LysanderComponent.extend({
             //
             // that means that we need to reintroduce the canned statement type
 
-            const result = this.gateway.search("fubar").then(r => {
+
+            // so figure out some way to parameterize it in advance.
+            // template literal?
+            const result = this.gateway.search(new FuzzySearchStatement()).then(r => {
                 console.log(r);
             });
             

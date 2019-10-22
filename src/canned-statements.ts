@@ -1,6 +1,12 @@
 // canned-statements
 
-export class FuzzySearchStatement {
+export interface CannedStatement {
+    getCypher(): string;
+    getParameters(): object;
+}
+
+
+export class FuzzySearchStatement implements CannedStatement {
     constructor() {
     }
 
@@ -12,3 +18,11 @@ export class FuzzySearchStatement {
         return {};
     }
 }
+
+
+
+const foo = `
+MATCH (n)
+WHERE apoc.text.fuzzyMatch(n.content, {query})
+RETURN n
+`;

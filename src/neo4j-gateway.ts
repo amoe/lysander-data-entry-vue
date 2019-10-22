@@ -5,6 +5,7 @@ import {
 } from '@/interfaces';
 import { QUERY_DEFINITIONS } from '@/cypher';
 import uuidv4 from 'uuid/v4';
+import { CannedStatement } from '@/canned-statements';
 
 
 const CLEAR_CYPHER = `MATCH (n) DETACH DELETE n`;
@@ -178,16 +179,9 @@ export class Neo4jGateway {
 
 
 
-    search(query: string): Result {
+    search(query: CannedStatement): Result {
         this.checkInitialized();
-
-        const foo = `
-MATCH (n)
-WHERE apoc.text.fuzzyMatch(n.content, {query})
-RETURN n
-`;
-
-        return this.session!.run(foo, { query })
+        return this.session!.run(query.getCypher(), query.getParameters());
     }
 
     // markRowProcessed(string rowId): Result {
