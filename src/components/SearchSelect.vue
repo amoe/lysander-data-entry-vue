@@ -1,6 +1,6 @@
 <template>
 <div>
-  <el-select filterable remote v-model="selectedValue"
+  <el-select filterable remote allow-create v-model="selectedValue"
              :remote-method="remoteMethod">
     <el-option v-for="item in availableOptions"
                :key="item.value"
@@ -49,7 +49,9 @@ export default LysanderComponent.extend({
                         label: r.get('text'), 
                         value: r.get('id')
                     };
+
                 });
+                console.log("found %o existing records", newOptions.length);
 
                 this.availableOptions = newOptions;
             });
