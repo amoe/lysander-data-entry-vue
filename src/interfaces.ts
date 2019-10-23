@@ -58,8 +58,9 @@ export interface RootState {
 }
 
 export interface LysanderState {
-}
-
+    counter: number;
+    formData: AggregatedForm;
+};
 
 // Stupid hack to make webpack reload the interfaces properly
 export const INTERFACES_FILE_VERSION = 1;

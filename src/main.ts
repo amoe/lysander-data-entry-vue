@@ -17,7 +17,10 @@ Vue.config.productionTip = false;
 
 
 Vue.use(Vuex);
-const store = new Vuex.Store({ modules: { lysander } });
+const store = new Vuex.Store({
+    modules: { lysander },
+    strict: true
+});
 
 new Vue({
     router,
