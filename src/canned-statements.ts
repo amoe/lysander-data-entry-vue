@@ -24,7 +24,7 @@ export class FuzzySearchStatement implements CannedStatement {
         const result = `
             MATCH (n:${this.nodeLabel})
             WHERE apoc.text.fuzzyMatch(n.${this.nodeProperty}, {query})
-            RETURN n
+            RETURN n.${this.nodeProperty} AS text, n.id AS id
         `;
 
         log.info(result);
