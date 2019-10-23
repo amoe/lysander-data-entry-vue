@@ -16,6 +16,7 @@
     "cytoscape": "^3.11.0",
     "date-fns": "^2.5.1",
     "element-ui": "2.4.11",
+    "loglevel": "^1.6.4",
     "neo4j-driver": "^1.7.6",
     "neovis.js": "^1.2.1",
     "sigma": "^2.0.0-alpha22",

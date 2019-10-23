@@ -1,5 +1,7 @@
 // canned-statements
 
+import log from 'loglevel';
+
 export interface CannedStatement {
     getCypher(): string;
     getParameters(): object;
@@ -7,22 +9,29 @@ export interface CannedStatement {
 
 
 export class FuzzySearchStatement implements CannedStatement {
-    constructor() {
+    nodeLabel: string;
+    nodeProperty: string;
+    query: string;
+
+    // XXX: VALIDATION!!!
+    constructor(nodeLabel: string, nodeProperty: string, query: string) {
+        this.nodeLabel = nodeLabel;
+        this.nodeProperty = nodeProperty;
+        this.query = query;
     }
 
     getCypher(): string {
-        return "RETURN 42";
+        const result = `
+            MATCH (n:${this.nodeLabel})
+            WHERE apoc.text.fuzzyMatch(n.${this.nodeProperty}, {query})
+            RETURN n
+        `;
+
+        log.info(result);
+        return result;
     }
 
     getParameters(): object {
-        return {};
+        return { query: this.query };
     }
 }
-
-
-
-const foo = `
-MATCH (n)
-WHERE apoc.text.fuzzyMatch(n.content, {query})
-RETURN n
-`;

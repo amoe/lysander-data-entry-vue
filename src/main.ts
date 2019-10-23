@@ -8,6 +8,8 @@ import locale from 'element-ui/lib/locale/lang/en';
 Vue.use(Element, { locale });
 import 'element-ui/lib/theme-chalk/index.css';
 
+import log from 'loglevel';
+log.setLevel(log.levels.INFO);
 
 Vue.config.productionTip = false;
 
