@@ -54,6 +54,12 @@ export type ModelInsert = ModelInsertSpec[]
 
 export type IdGenerator = () => string;
 
+export interface RootState {
+}
+
+export interface LysanderState {
+}
+
 
 // Stupid hack to make webpack reload the interfaces properly
 export const INTERFACES_FILE_VERSION = 1;
