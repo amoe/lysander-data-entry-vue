@@ -6,5 +6,6 @@ export default {
     UPDATE_LOCATION: 'updateLocation',
     ADD_LOCATION: 'addLocation',
     UPDATE_EXTRA_EVENT: 'updateExtraEvent',
-    ADD_EXTRA_EVENT: 'addExtraEvent'
+    ADD_EXTRA_EVENT: 'addExtraEvent',
+    ADD_PERSON: 'addPerson'
 };

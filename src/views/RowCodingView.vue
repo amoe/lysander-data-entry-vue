@@ -65,8 +65,10 @@
         </template>
       </el-table-column>
     </el-table>
-<!--    <el-button v-on:click="addPerson">Add</el-button>  -->
+   <el-button v-on:click="addPerson">Add</el-button>
   </div>
+
+  <el-button v-on:click="submit">Submit</el-button>
 </div>
 </template>
 
@@ -74,13 +76,16 @@
 import Vue from 'vue';
 import {createNamespacedHelpers} from 'vuex';
 import {LysanderState} from '@/interfaces';
+import {LysanderComponent} from '@/mixins';
 import mc from '@/mutation-constants';
 import ListDialog from '@/components/ListDialog.vue';
-
+import { StatementResult } from 'neo4j-driver/types/v1/index';
+import {toNeo4jParameters} from '@/transform';
+import { REAL_ID_GENERATOR } from '@/id-generators';
 
 const { mapState, mapMutations } = createNamespacedHelpers('lysander');
 
-export default Vue.extend({
+export default LysanderComponent.extend({
     components: {ListDialog},
     created() {
         console.log(this.formData);
@@ -112,6 +117,21 @@ export default Vue.extend({
             // necessary as child can't mutate state.
             this.dialogVisible = false;
         },
+        report(result: StatementResult) {
+            const n = result.summary.counters.nodesCreated();
+            const r = result.summary.counters.relationshipsCreated();
+            
+            this.$notify.info({title:'foo', message: `created ${n} nodes, ${r} relationships`});
+        },
+        submit() {
+            this.gateway.submitModel(
+                toNeo4jParameters(this.formData, REAL_ID_GENERATOR)
+            ).then(result => {
+                result.forEach(this.report);
+            }).catch(error => {
+                this.$notify.error({title: 'bar', message: error.message});
+            });
+        },
         ...mapMutations({
             updateDate: mc.UPDATE_DATE,
             updateCodename: mc.UPDATE_CODENAME,
@@ -119,7 +139,8 @@ export default Vue.extend({
             updateLocation: mc.UPDATE_LOCATION,
             addLocation: mc.ADD_LOCATION,
             updateExtraEvent: mc.UPDATE_EXTRA_EVENT,
-            addExtraEvent: mc.ADD_EXTRA_EVENT
+            addExtraEvent: mc.ADD_EXTRA_EVENT,
+            addPerson: mc.ADD_PERSON
         })
     },
     computed: {

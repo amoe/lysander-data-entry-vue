@@ -4,7 +4,6 @@ import RowCodingView from './views/RowCodingView.vue';
 import TilletSpreadsheet from '@/components/TilletSpreadsheet.vue';
 import Sources from '@/views/Sources.vue';
 import AdvancedAdministration from '@/views/AdvancedAdministration.vue';
-import OldRowCodingView from '@/views/OldRowCodingView.vue';
 
 Vue.use(Router);
 
@@ -14,11 +13,6 @@ export default new Router({
             path: '/',
             name: 'home',
             component: RowCodingView,
-        },
-        {
-            path: '/old-row-coding-view',
-            name: 'old-row-coding-view',
-            component: OldRowCodingView
         },
         {
             path: '/sources',

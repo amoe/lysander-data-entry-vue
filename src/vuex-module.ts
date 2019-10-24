@@ -57,6 +57,13 @@ export const lysander: Module<LysanderState, RootState> = {
         },
         [mc.ADD_EXTRA_EVENT]: (state) => {
             state.formData.extraEvents.push({ content: "" });
+        },
+        [mc.ADD_PERSON]: (state) => {
+            state.formData.persons.push({
+                name: "",
+                role: null,
+                aliases: []
+            });
         }
     },
     actions: {

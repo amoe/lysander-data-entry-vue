@@ -2,7 +2,6 @@
   <div id="app">
     <div id="nav">
       <router-link to="/">Home</router-link> |
-      <router-link to="/old-row-coding-view">Old Row Coding View </router-link> |
       <router-link to="/sources">Source Administration</router-link> |
       <router-link to="/graph">Graph</router-link> |
       <router-link to="/about">About</router-link> |
