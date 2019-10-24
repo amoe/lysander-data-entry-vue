@@ -28,7 +28,12 @@ export const lysander: Module<LysanderState, RootState> = {
             state.formData.date = newDate;
         },
         [mc.UPDATE_CODENAME]: (state, { newCodename, index }) => {
-            state.formData.codenames[index] = newCodename;
+            state.formData.codenames[index].content = newCodename;
+        },
+        [mc.ADD_CODENAME]: (state) => {
+            state.formData.codenames.push(
+                { content: "" }
+            );
         }
     },
     actions: {

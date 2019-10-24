@@ -17,7 +17,8 @@
       </li>
     </ul>
   </div>
-
+  <el-button type="primary" icon="el-icon-plus" 
+             v-on:click="addCodename">Codename</el-button>
 </div>
 </template>
 
@@ -33,6 +34,10 @@ export default Vue.extend({
     created() {
         console.log(this.formData);
     },
+    data() {
+        return {
+        };
+    },
     methods: {
         // Wrap up the payload
         onCodenameInput(newCodename: string, index: number) {
@@ -40,7 +45,8 @@ export default Vue.extend({
         },
         ...mapMutations({
             updateDate: mc.UPDATE_DATE,
-            updateCodename: mc.UPDATE_CODENAME
+            updateCodename: mc.UPDATE_CODENAME,
+            addCodename: mc.ADD_CODENAME
         })
     },
     computed: {
