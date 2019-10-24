@@ -1,6 +1,13 @@
 <template>
 <div>
   <h1>RowCodingView</h1>
+
+  <list-dialog v-if="selectedIndex !== null"
+               :parent-list="formData.persons" :dialog-visible="dialogVisible"
+               :selected-index="selectedIndex"
+               sublist-property="aliases"
+               v-on:closed="onDialogClosed"></list-dialog>
+
   
   <h2>Date</h2>
   <el-date-picker :value="formData.date" @input="updateDate" type="date"
@@ -49,16 +56,16 @@
 
   <h2>Persons</h2>
   <div>
-    <el-table :data="persons">
+    <el-table :data="formData.persons">
       <el-table-column prop="name" label="Name"/>
       <el-table-column label="Operations">
         <template slot-scope="scope">
           <el-button size="mini"
-                     v-on:click="popAliases(scope.$index)">Assign Aliases</el-button>
+                     @click="popAliases(scope.$index)">Assign Aliases</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <el-button v-on:click="addPerson">Add</el-button>
+<!--    <el-button v-on:click="addPerson">Add</el-button>  -->
   </div>
 </div>
 </template>
@@ -68,15 +75,20 @@ import Vue from 'vue';
 import {createNamespacedHelpers} from 'vuex';
 import {LysanderState} from '@/interfaces';
 import mc from '@/mutation-constants';
+import ListDialog from '@/components/ListDialog.vue';
+
 
 const { mapState, mapMutations } = createNamespacedHelpers('lysander');
 
 export default Vue.extend({
+    components: {ListDialog},
     created() {
         console.log(this.formData);
     },
     data() {
         return {
+            dialogVisible: false,
+            selectedIndex: null as number | null
         };
     },
     methods: {
@@ -90,6 +102,15 @@ export default Vue.extend({
         },
         onLocationInput(newLocation: string, index: number) {
             this.updateLocation({newLocation, index});
+        },
+        popAliases(index: number) {
+            console.log("picked index %o", index);
+            this.dialogVisible = true;
+            this.selectedIndex = index;
+        },
+        onDialogClosed() {
+            // necessary as child can't mutate state.
+            this.dialogVisible = false;
         },
         ...mapMutations({
             updateDate: mc.UPDATE_DATE,
