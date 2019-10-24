@@ -19,6 +19,20 @@
   </div>
   <el-button type="primary" icon="el-icon-plus" 
              v-on:click="addCodename">Codename</el-button>
+
+  <h2>Locations</h2>
+
+  <div class="locations">
+    <ul>
+      <li v-for="(location, index) in formData.locations">
+        <el-input @input="onLocationInput($event, index)"
+                  :value="location.content"></el-input>
+      </li>
+    </ul>
+  </div>
+  <el-button type="primary" icon="el-icon-plus" 
+             v-on:click="addLocation">Location</el-button>
+
 </div>
 </template>
 
@@ -43,10 +57,15 @@ export default Vue.extend({
         onCodenameInput(newCodename: string, index: number) {
             this.updateCodename({newCodename, index});
         },
+        onLocationInput(newLocation: string, index: number) {
+            this.updateLocation({newLocation, index});
+        },
         ...mapMutations({
             updateDate: mc.UPDATE_DATE,
             updateCodename: mc.UPDATE_CODENAME,
-            addCodename: mc.ADD_CODENAME
+            addCodename: mc.ADD_CODENAME,
+            updateLocation: mc.UPDATE_LOCATION,
+            addLocation: mc.ADD_LOCATION
         })
     },
     computed: {

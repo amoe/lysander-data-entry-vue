@@ -31,9 +31,13 @@ export const lysander: Module<LysanderState, RootState> = {
             state.formData.codenames[index].content = newCodename;
         },
         [mc.ADD_CODENAME]: (state) => {
-            state.formData.codenames.push(
-                { content: "" }
-            );
+            state.formData.codenames.push({ content: "" });
+        },
+        [mc.UPDATE_LOCATION]: (state, { newLocation, index }) => {
+            state.formData.locations[index].content = newLocation;
+        },
+        [mc.ADD_LOCATION]: (state) => {
+            state.formData.locations.push({ content: "" });
         }
     },
     actions: {
