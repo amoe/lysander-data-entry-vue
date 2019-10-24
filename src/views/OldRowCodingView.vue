@@ -179,12 +179,4 @@ export default LysanderComponent.extend({
 });
 </script>
 <style lang="less">
-div.locations {
-    background-color: #F2F6FC;
-    padding: 1em;
-}
-
-div.locations li {
-    list-style-type: none;
-}
 </style>

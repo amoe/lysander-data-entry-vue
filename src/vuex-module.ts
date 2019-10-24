@@ -38,6 +38,12 @@ export const lysander: Module<LysanderState, RootState> = {
         },
         [mc.ADD_LOCATION]: (state) => {
             state.formData.locations.push({ content: "" });
+        },
+        [mc.UPDATE_EXTRA_EVENT]: (state, { newExtraEvent, index }) => {
+            state.formData.extraEvents[index].content = newExtraEvent;
+        },
+        [mc.ADD_EXTRA_EVENT]: (state) => {
+            state.formData.extraEvents.push({ content: "" });
         }
     },
     actions: {

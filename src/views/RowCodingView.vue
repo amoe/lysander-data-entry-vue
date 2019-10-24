@@ -9,7 +9,7 @@
   
   <h2>Codenames</h2>
   
-  <div class="codenames">
+  <div>
     <ul>
       <li v-for="(codename, index) in formData.codenames">
         <el-input @input="onCodenameInput($event, index)"
@@ -22,7 +22,7 @@
 
   <h2>Locations</h2>
 
-  <div class="locations">
+  <div>
     <ul>
       <li v-for="(location, index) in formData.locations">
         <el-input @input="onLocationInput($event, index)"
@@ -33,6 +33,20 @@
   <el-button type="primary" icon="el-icon-plus" 
              v-on:click="addLocation">Location</el-button>
 
+  <h2>Extra Events</h2>
+
+  <div>
+    <ul>
+      <li v-for="(extraEvent, index) in formData.extraEvents">
+        <el-input @input="onExtraEventInput($event, index)"
+                  :value="extraEvent.content"></el-input>
+      </li>
+    </ul>
+  </div>
+  <el-button type="primary" icon="el-icon-plus" 
+             v-on:click="addExtraEvent">Extra Event</el-button>
+
+ 
 </div>
 </template>
 
@@ -54,6 +68,10 @@ export default Vue.extend({
     },
     methods: {
         // Wrap up the payload
+        onExtraEventInput(newExtraEvent: string, index: number) {
+            this.updateExtraEvent({newExtraEvent, index});
+        },
+
         onCodenameInput(newCodename: string, index: number) {
             this.updateCodename({newCodename, index});
         },
@@ -65,7 +83,9 @@ export default Vue.extend({
             updateCodename: mc.UPDATE_CODENAME,
             addCodename: mc.ADD_CODENAME,
             updateLocation: mc.UPDATE_LOCATION,
-            addLocation: mc.ADD_LOCATION
+            addLocation: mc.ADD_LOCATION,
+            updateExtraEvent: mc.UPDATE_EXTRA_EVENT,
+            addExtraEvent: mc.ADD_EXTRA_EVENT
         })
     },
     computed: {
