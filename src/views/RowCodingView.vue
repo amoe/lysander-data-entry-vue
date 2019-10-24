@@ -1,9 +1,23 @@
 <template>
 <div>
   <h1>RowCodingView</h1>
+  
+  <h2>Date</h2>
+  <el-date-picker :value="formData.date" @input="updateDate" type="date"
+                  placeholder="Pick a day">
+  </el-date-picker>
+  
+  <h2>Codenames</h2>
+  
+  <div class="codenames">
+    <ul>
+      <li v-for="(codename, index) in formData.codenames">
+        <el-input @input="onCodenameInput($event, index)"
+                  :value="codename.content"></el-input>
+      </li>
+    </ul>
+  </div>
 
-    <el-date-picker :value="formData.date" @input="updateDate" type="date" placeholder="Pick a day">
-    </el-date-picker>
 </div>
 </template>
 
@@ -20,8 +34,13 @@ export default Vue.extend({
         console.log(this.formData);
     },
     methods: {
+        // Wrap up the payload
+        onCodenameInput(newCodename: string, index: number) {
+            this.updateCodename({newCodename, index});
+        },
         ...mapMutations({
-            updateDate: mc.UPDATE_DATE
+            updateDate: mc.UPDATE_DATE,
+            updateCodename: mc.UPDATE_CODENAME
         })
     },
     computed: {

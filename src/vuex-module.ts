@@ -14,7 +14,7 @@ export const lysander: Module<LysanderState, RootState> = {
         counter: 0,
         formData: {
             date: new Date('1940-01-01'),
-            codenames: [],
+            codenames: [{ content: "fry" }],
             persons: [],
             locations: [],
             extraEvents: []
@@ -26,6 +26,9 @@ export const lysander: Module<LysanderState, RootState> = {
         },
         [mc.UPDATE_DATE]: (state, newDate) => {
             state.formData.date = newDate;
+        },
+        [mc.UPDATE_CODENAME]: (state, { newCodename, index }) => {
+            state.formData.codenames[index] = newCodename;
         }
     },
     actions: {
