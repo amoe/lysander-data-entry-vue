@@ -2,12 +2,6 @@
 <div>
 <h1>ws</h1>
 
-<search-select node-label="Person" node-property="name">
-</search-select>
-
-
-{{counter}}
-<button @click="increment">increment</button>
 
 </div>
 </template>
@@ -22,12 +16,8 @@ import mc from '@/mutation-constants';
 export default Vue.extend({
     components: {SearchSelect},
     methods: {
-        increment() {
-            this.$store.commit(mc.ADD_TO_COUNTER);
-        }
     },
     computed: {
-        ...mapGetters(['counter'])
     }
 });
 </script>
