@@ -46,7 +46,20 @@
   <el-button type="primary" icon="el-icon-plus" 
              v-on:click="addExtraEvent">Extra Event</el-button>
 
- 
+
+  <h2>Persons</h2>
+  <div>
+    <el-table :data="persons">
+      <el-table-column prop="name" label="Name"/>
+      <el-table-column label="Operations">
+        <template slot-scope="scope">
+          <el-button size="mini"
+                     v-on:click="popAliases(scope.$index)">Assign Aliases</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-button v-on:click="addPerson">Add</el-button>
+  </div>
 </div>
 </template>
 

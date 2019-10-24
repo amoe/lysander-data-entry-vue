@@ -3,7 +3,7 @@ import mc from '@/mutation-constants';
 import log from 'loglevel';
 
 import {
-    RootState, AggregatedForm, LysanderState
+    RootState, AggregatedForm, LysanderState, Role
 } from '@/interfaces';
 
 
@@ -15,7 +15,20 @@ export const lysander: Module<LysanderState, RootState> = {
         formData: {
             date: new Date('1940-01-01'),
             codenames: [{ content: "fry" }],
-            persons: [],
+            persons: [
+                {
+                    name: "Fry",
+                    role: Role.Agent,
+                    aliases: [
+                        { name: "Sneaky Pete" }
+                    ]
+                },
+                {
+                    name: "Leela",
+                    role: Role.Pilot,
+                    aliases: []
+                }
+            ],
             locations: [],
             extraEvents: []
         }
