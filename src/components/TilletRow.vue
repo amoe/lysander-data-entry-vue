@@ -1,7 +1,7 @@
 <template>
 <tr>
-  <td>{{record.record_id}}</td>
-  <td>{{record.date}}</td>
+  <td><sub-row :content="[record.record_id]"></sub-row></td>
+  <td><sub-row :content="[record.date]"></sub-row></td>
   <td><sub-row :content="record.landing_zone"></sub-row> </td>
   <td><sub-row :content="record.references"></sub-row> </td>
   <td><sub-row :content="record.passengers_out"></sub-row> </td>
