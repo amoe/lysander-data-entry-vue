@@ -9,8 +9,3 @@ node_modules/
 
 # Log files
 npm-debug.log*
-
-
-
-# should not enter git
-public/sensitive
