@@ -60,6 +60,7 @@ export interface RootState {
 export interface LysanderState {
     counter: number;
     formData: AggregatedForm;
+    sourceRowListIndex: number;
 };
 
 // Stupid hack to make webpack reload the interfaces properly

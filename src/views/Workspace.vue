@@ -4,6 +4,8 @@
 
   <sheet-carousel :sheet-data="tilletData"></sheet-carousel>
 
+  <el-button type="primary" icon="el-icon-check"
+             @click="markAsProcessed">Mark as processed</el-button>
   
 </div>
 </template>
@@ -42,6 +44,9 @@ export default LysanderComponent.extend({
         });
     },
     methods: {
+        markAsProcessed() {
+            // Should be a vuex action.
+        }
     },
     computed: {
     }

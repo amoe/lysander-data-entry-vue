@@ -7,5 +7,6 @@ export default {
     ADD_LOCATION: 'addLocation',
     UPDATE_EXTRA_EVENT: 'updateExtraEvent',
     ADD_EXTRA_EVENT: 'addExtraEvent',
-    ADD_PERSON: 'addPerson'
+    ADD_PERSON: 'addPerson',
+    SET_ACTIVE_INDEX_OF_SOURCE_ROW_LIST: 'setActiveIndexOfSourceRowList'
 };

@@ -31,7 +31,8 @@ export const lysander: Module<LysanderState, RootState> = {
             ],
             locations: [],
             extraEvents: []
-        }
+        },
+        sourceRowListIndex: 0
     },
     mutations: {
         [mc.ADD_TO_COUNTER]: (state) => {
@@ -64,6 +65,9 @@ export const lysander: Module<LysanderState, RootState> = {
                 role: null,
                 aliases: []
             });
+        },
+        [mc.SET_ACTIVE_INDEX_OF_SOURCE_ROW_LIST]: (state, newIndex) => {
+            state.sourceRowListIndex = newIndex;
         }
     },
     actions: {
