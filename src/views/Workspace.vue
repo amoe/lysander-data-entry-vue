@@ -14,11 +14,14 @@
 import Vue from 'vue';
 import SheetCarousel from '@/components/SheetCarousel.vue';
 import log from 'loglevel';
-import {mapGetters} from 'vuex';
 import mc from '@/mutation-constants';
 import axios from 'axios';
 import {LysanderComponent} from '@/mixins';
 import {TilletDatum} from '@/interfaces';
+import {createNamespacedHelpers} from 'vuex';
+
+
+const { mapState, mapMutations, mapActions } = createNamespacedHelpers('lysander');
 
 export default LysanderComponent.extend({
     components: {SheetCarousel},
@@ -34,6 +37,8 @@ export default LysanderComponent.extend({
         };
     },
     created() {
+        console.log(this.getUnprocessedRows);
+
         this.gateway.getUnprocessedRows(this.sourceName).then(result => {
             this.$notify.info({title: "win", message: "success"});
             this.tilletData = result.records.map(rec => {
@@ -43,11 +48,17 @@ export default LysanderComponent.extend({
             console.log(e);
             this.$notify.error({title: "foo", message: "fail"});
         });
+
     },
     methods: {
         markAsProcessed() {
-            // Should be a vuex action.
-        }
+            console.log("doing nothing");
+        },
+        ...mapActions(
+            {
+                getUnprocessedRows: 'getUnprocessedRows'
+            }
+        )
     },
     computed: {
     }

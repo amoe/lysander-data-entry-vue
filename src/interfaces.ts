@@ -62,6 +62,7 @@ export interface LysanderState {
     counter: number;
     formData: AggregatedForm;
     sourceRowListIndex: number;
+    sourceRows: TilletDatum[];
 };
 
 // Stupid hack to make webpack reload the interfaces properly

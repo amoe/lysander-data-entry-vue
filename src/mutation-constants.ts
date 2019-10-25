@@ -8,5 +8,6 @@ export default {
     UPDATE_EXTRA_EVENT: 'updateExtraEvent',
     ADD_EXTRA_EVENT: 'addExtraEvent',
     ADD_PERSON: 'addPerson',
-    SET_ACTIVE_INDEX_OF_SOURCE_ROW_LIST: 'setActiveIndexOfSourceRowList'
+    SET_ACTIVE_INDEX_OF_SOURCE_ROW_LIST: 'setActiveIndexOfSourceRowList',
+    SET_SOURCE_ROWS: 'setSourceRows'
 };

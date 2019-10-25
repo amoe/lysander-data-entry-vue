@@ -7,7 +7,6 @@ import { QUERY_DEFINITIONS } from '@/cypher';
 import uuidv4 from 'uuid/v4';
 import { CannedStatement } from '@/canned-statements';
 
-
 const INSERT_SOURCE_ROW = `
 MATCH (s:Source {name: {sourceName}})
 CREATE (r:SourceRow {processed: false, json: {json}}),
@@ -209,6 +208,7 @@ export class Neo4jGateway {
     }
 
     // markRowProcessed(string rowId): Result {
+
     // }
 
     // NB: Do we want to unwrap this into a regular promise or something

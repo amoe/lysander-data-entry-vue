@@ -1,6 +1,7 @@
 import { Module } from 'vuex';
 import mc from '@/mutation-constants';
 import log from 'loglevel';
+import actions from '@/actions';
 
 import {
     RootState, AggregatedForm, LysanderState, Role
@@ -32,7 +33,8 @@ export const lysander: Module<LysanderState, RootState> = {
             locations: [],
             extraEvents: []
         },
-        sourceRowListIndex: 0
+        sourceRowListIndex: 0,
+        sourceRows: []
     },
     mutations: {
         [mc.ADD_TO_COUNTER]: (state) => {
@@ -68,10 +70,12 @@ export const lysander: Module<LysanderState, RootState> = {
         },
         [mc.SET_ACTIVE_INDEX_OF_SOURCE_ROW_LIST]: (state, newIndex) => {
             state.sourceRowListIndex = newIndex;
+        },
+        [mc.SET_SOURCE_ROWS]: (state, newRows) => {
+            state.sourceRows = newRows;
         }
     },
-    actions: {
-    },
+    actions,
     getters: {
         counter(state, getters) {
             return state.counter;
