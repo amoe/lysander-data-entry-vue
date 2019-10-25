@@ -11,7 +11,15 @@ import { CannedStatement } from '@/canned-statements';
 const INSERT_SOURCE_ROW = `
 MATCH (s:Source {name: {sourceName}})
 CREATE (r:SourceRow {processed: false, json: {json}}),
-       (s)-[:HAS_ROW {position: {index}}]-(r)
+       (s)-[:HAS_ROW {position: {index}}]->(r)
+`;
+
+// return ordered by position within the source
+const RETRIEVE_UNPROCESSED = `
+    MATCH (s:Source {name: {sourceName}}),
+          (s)-[h:HAS_ROW]->(r:SourceRow {processed: false})
+    RETURN r.json AS json
+    ORDER BY h.position
 `;
 
 
@@ -171,7 +179,7 @@ export class Neo4jGateway {
         this.checkInitialized();
 
         const txResult = this.session!.writeTransaction(tx => {
-            const promises: any = [];
+            const promises = [] as Result[];
 
             const p1 = tx.run(
                 "CREATE (s:Source {name: {name}})", { name: sourceName }
@@ -209,11 +217,10 @@ export class Neo4jGateway {
     // }
 
 
-    getUnprocessedRows(): Result {
+    getUnprocessedRows(sourceName: string): Result {
         this.checkInitialized();
         return this.session!.run(
-            "MATCH (s:SourceRow {processed: false}) RETURN s.json AS json",
-            {}
+            RETRIEVE_UNPROCESSED, { sourceName }
         );
     }
 

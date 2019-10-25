@@ -29,11 +29,12 @@ export default LysanderComponent.extend({
                 {content: "bender"},
                 {content: "leela"}
             ],
-            tilletData: [] as TilletDatum[]
+            tilletData: [] as TilletDatum[],
+            sourceName: "TILLET"
         };
     },
     created() {
-        this.gateway.getUnprocessedRows().then(result => {
+        this.gateway.getUnprocessedRows(this.sourceName).then(result => {
             this.$notify.info({title: "win", message: "success"});
             this.tilletData = result.records.map(rec => {
                 return JSON.parse(rec.get('json'));

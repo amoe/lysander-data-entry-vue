@@ -20,7 +20,7 @@ export default LysanderComponent.extend({
     data() {
         return {
             tilletData: null as any,
-            sourceName: "" as string,
+            sourceName: "TILLET" as string,
         };
     },
     created() {
@@ -39,6 +39,7 @@ export default LysanderComponent.extend({
             this.gateway.createSourceWithRows(this.sourceName, this.tilletData).then(r => {
                 this.$notify.info({title: "foo", message: "success"});
             }).catch(e => {
+                console.log(e);
                 console.log("fail");
             });
         },
