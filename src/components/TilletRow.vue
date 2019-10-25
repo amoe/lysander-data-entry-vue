@@ -24,7 +24,6 @@ export default Vue.extend({
         }
     },
     created() {
-        console.log(this.record);
     }
 
 });

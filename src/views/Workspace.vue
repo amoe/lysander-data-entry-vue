@@ -3,6 +3,8 @@
   <h1>ws</h1>
 
   <sheet-carousel :sheet-data="tilletData"></sheet-carousel>
+
+  
 </div>
 </template>
 
@@ -13,8 +15,10 @@ import log from 'loglevel';
 import {mapGetters} from 'vuex';
 import mc from '@/mutation-constants';
 import axios from 'axios';
+import {LysanderComponent} from '@/mixins';
+import {TilletDatum} from '@/interfaces';
 
-export default Vue.extend({
+export default LysanderComponent.extend({
     components: {SheetCarousel},
     data() {
         return {
@@ -23,16 +27,18 @@ export default Vue.extend({
                 {content: "bender"},
                 {content: "leela"}
             ],
-            tilletData: []
+            tilletData: [] as TilletDatum[]
         };
     },
     created() {
-        // Next step is to deserialize it from the neo4j nodes rather than to 
-        // read it from the json.
-        axios.get("/sensitive/tillet_converted.json").then(r => {
-            this.tilletData = r.data.slice(0, 5);
+        this.gateway.getUnprocessedRows().then(result => {
+            this.$notify.info({title: "win", message: "success"});
+            this.tilletData = result.records.map(rec => {
+                return JSON.parse(rec.get('json'));
+            });
         }).catch(e => {
-            console.log("error is %o", e);
+            console.log(e);
+            this.$notify.error({title: "foo", message: "fail"});
         });
     },
     methods: {

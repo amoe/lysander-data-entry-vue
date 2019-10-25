@@ -167,7 +167,7 @@ export class Neo4jGateway {
             return Promise.all(
                 rows.map(row => {
                     return tx.run(
-                        "CREATE (s:SourceRow {json: {json}})",
+                        "CREATE (s:SourceRow {processed: false, json: {json}})",
                         { json: JSON.stringify(row) }
                     );
                 })
@@ -191,6 +191,15 @@ export class Neo4jGateway {
     // getNextUnprocessedRow(): Result {
 
     // }
+
+
+    getUnprocessedRows(): Result {
+        this.checkInitialized();
+        return this.session!.run(
+            "MATCH (s:SourceRow {processed: false}) RETURN s.json AS json",
+            {}
+        );
+    }
 
     destroy(): void {
         if (this.session !== null) {
