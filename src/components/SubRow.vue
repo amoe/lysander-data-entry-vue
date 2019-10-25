@@ -1,9 +1,12 @@
 <template>
-  <ul>
-    <li v-for="item in content">
-      {{item}}
-    </li>
-  </ul>
+  <div>
+    <ul v-if="content.length > 0">
+      <li v-for="item in content">
+        {{item}}
+      </li>
+    </ul>
+    <p v-else class="empty-case">No data</p>
+  </div>
 </template>
 
 <script lang="ts">
@@ -19,4 +22,8 @@ export default Vue.extend({
 </script>
 
 <style lang="less">
+p.empty-case {
+    font-style: italic;
+    opacity: 0.70;
+}
 </style>

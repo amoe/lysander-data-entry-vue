@@ -1,20 +1,26 @@
 <template>
 <div>
   <h1>ws</h1>
-
+  
   <div v-if="tilletData">
-    <table class="tillet-table">
-      <tr>
-        <th>Record ID</th>
-        <th>Date</th>
-        <th>Landing Zone</th>
-        <th>References</th>
-        <th>Passengers Out</th>
-        <th>Operation</th>
-        <th>Squadron</th>
-      </tr>
-      <tillet-row :record="tilletData[0]"></tillet-row>
-    </table>
+    <el-carousel width="100%">
+      <el-carousel-item v-for="record in tilletData" :key="record_id">
+        <table class="tillet-table">
+          <thead>
+            <tr>
+              <th>Record ID</th>
+              <th>Date</th>
+              <th>Landing Zone</th>
+              <th>References</th>
+              <th>Passengers Out</th>
+              <th>Operation</th>
+              <th>Squadron</th>
+            </tr>
+          </thead>
+          <tillet-row :record="record"></tillet-row>
+        </table>
+      </el-carousel-item>
+    </el-carousel>
   </div>
   
   <!-- <el-carousel trigger="click" height="150px"> -->
@@ -48,13 +54,13 @@ export default Vue.extend({
                 {content: "bender"},
                 {content: "leela"}
             ],
-            tilletData: null
+            tilletData: []
         };
     },
     created() {
         axios.get("/sensitive/tillet_converted.json").then(r => {
             this.tilletData = r.data.slice(0, 5);
-            console.log("set data", this.tilletData[0]);
+//            console.log("set data", this.tilletData[0]);
         }).catch(e => {
             console.log("error is %o", e);
         });
@@ -67,8 +73,23 @@ export default Vue.extend({
 </script>
 
 <style lang="less">
+table.tillet-table {
+    table-layout: fixed;
+}
+
 table.tillet-table  td,th {
     border-bottom: 1px solid #ebeef5;
     padding: 12px 0 12px 0;
+    width: 10%;
 }
+
+
+
+table.tillet-table thead {
+    font-family: serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: #909399
+}
+
 </style>

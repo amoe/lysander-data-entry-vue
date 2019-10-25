@@ -2,13 +2,11 @@
 <tr>
   <td>{{record.record_id}}</td>
   <td>{{record.date}}</td>
-  <td>{{record.landing_zone}}</td>
-  <td>{{record.references}}</td>
-  <td>{{record.passengers_out}}</td>
-  <td>{{record.operation}}</td>
-  <td>
-    <sub-row :content="record.squadron"></sub-row>
-  </td>
+  <td><sub-row :content="record.landing_zone"></sub-row> </td>
+  <td><sub-row :content="record.references"></sub-row> </td>
+  <td><sub-row :content="record.passengers_out"></sub-row> </td>
+  <td><sub-row :content="record.operation"></sub-row> </td>
+  <td><sub-row :content="record.squadron"></sub-row> </td>
 </tr>
 </div>
 </template>
