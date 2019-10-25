@@ -8,6 +8,13 @@ import uuidv4 from 'uuid/v4';
 import { CannedStatement } from '@/canned-statements';
 
 
+const INSERT_SOURCE_ROW = `
+MATCH (s:Source {name: {sourceName}})
+CREATE (r:SourceRow {processed: false, json: {json}}),
+       (s)-[:HAS_ROW {position: {index}}]-(r)
+`;
+
+
 const CLEAR_CYPHER = `MATCH (n) DETACH DELETE n`;
 
 // Works fine
@@ -160,23 +167,32 @@ export class Neo4jGateway {
         return this.session!.run(CLEAR_CYPHER);
     }
 
-    createSourceRows(rows: object[]): Promise<StatementResult[]> {
+    createSourceWithRows(sourceName: string, rows: object[]): Promise<StatementResult[]> {
         this.checkInitialized();
-        // Some clever thing to load many many rows at once.
+
         const txResult = this.session!.writeTransaction(tx => {
-            return Promise.all(
-                rows.map(row => {
-                    return tx.run(
-                        "CREATE (s:SourceRow {processed: false, json: {json}})",
-                        { json: JSON.stringify(row) }
-                    );
-                })
+            const promises: any = [];
+
+            const p1 = tx.run(
+                "CREATE (s:Source {name: {name}})", { name: sourceName }
             );
+
+            promises.push(p1);
+
+            rows.forEach((row, index) => {
+                const p2 = tx.run(INSERT_SOURCE_ROW, {
+                    sourceName,
+                    index,
+                    json: JSON.stringify(row)
+                });
+                promises.push(p2);
+            });
+
+            return Promise.all(promises);
         });
 
         return txResult;
     }
-
 
 
     search(query: CannedStatement): Result {
