@@ -7,8 +7,6 @@ import {
     RootState, AggregatedForm, LysanderState, Role
 } from '@/interfaces';
 
-
-
 export const lysander: Module<LysanderState, RootState> = {
     namespaced: true,
     state: {

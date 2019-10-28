@@ -46,6 +46,8 @@ export default (Vue as ThisFoo).extend({
         console.log(this.gateway);
         console.log(this.a1);
 
+        this.a1();
+
         // this.gateway.getUnprocessedRows(this.sourceName).then(result => {
         //     this.$notify.info({title: "win", message: "success"});
         //     this.tilletData = result.records.map(rec => {
