@@ -13,8 +13,10 @@ function recordToSourceRow(record: Record): SourceRow {
 }
 
 const actions: ActionTree<LysanderState, RootState> = {
-    [ac.GET_UNPROCESSED_ROWS]: (store, sourceName: string) => {
+    [ac.GET_UNPROCESSED_ROWS]: (store) => {
         console.log("inside the action for unprocessed rows");
+
+        const sourceName = store.state.selectedSource;
 
         singletons.gateway.getUnprocessedRows(sourceName).then(result => {
             console.log("success");
@@ -32,7 +34,7 @@ const actions: ActionTree<LysanderState, RootState> = {
         singletons.gateway.markAsProcessed(thisRowId).then(result => {
             console.log("success");
             // maybe reissue the action
-            //            store.dispatch(ac.GET_UNPROCESSED_ROWS, 
+            store.dispatch(ac.GET_UNPROCESSED_ROWS);
         }).catch(e => {
             console.log("failure");
         });

@@ -46,7 +46,7 @@ export default (Vue as ThisFoo).extend({
         console.log(this.gateway);
         console.log(this.a1);
 
-        this.a1(this.sourceName);
+        this.a1();
         console.log(this.sourceRows);
     },
     methods: {

@@ -68,6 +68,7 @@ export interface LysanderState {
     formData: AggregatedForm;
     sourceRowListIndex: number;
     sourceRows: SourceRow[];
+    selectedSource: string;
 };
 
 // Stupid hack to make webpack reload the interfaces properly

@@ -31,6 +31,7 @@ export const lysander: Module<LysanderState, RootState> = {
             locations: [],
             extraEvents: []
         },
+        selectedSource: 'TILLET',
         sourceRowListIndex: 0,
         sourceRows: []
     },
