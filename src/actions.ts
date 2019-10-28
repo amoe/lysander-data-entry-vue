@@ -38,6 +38,13 @@ const actions: ActionTree<LysanderState, RootState> = {
         }).catch(e => {
             console.log("failure");
         });
+    },
+    [ac.SET_ALL_UNPROCESSED]: (store) => {
+        singletons.gateway.setAllUnprocessed().then(result => {
+            console.log("success");
+        }).catch(e => {
+            console.log("fail");
+        });
     }
 };
 

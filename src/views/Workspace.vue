@@ -22,14 +22,13 @@ import {createNamespacedHelpers} from 'vuex';
 
 const { mapState, mapMutations, mapActions } = createNamespacedHelpers('lysander');
 
-interface VuexBindings {
+interface TheseVuexBindings {
     a1: any;    // action hack
-    a2: any;
 }
 
-type ThisFoo = VueConstructor<Vue & InstanceType<typeof LysanderComponent> & VuexBindings>;
+type ThisComponent = VueConstructor<Vue & InstanceType<typeof LysanderComponent> & TheseVuexBindings>;
 
-export default (Vue as ThisFoo).extend({
+export default (Vue as ThisComponent).extend({
     components: {SheetCarousel},
     mixins: [LysanderComponent],
     data() {

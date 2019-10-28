@@ -219,6 +219,13 @@ export class Neo4jGateway {
         );
     }
 
+    setAllUnprocessed(): Result {
+        this.checkInitialized();
+        return this.session!.run(
+            "MATCH (s:SourceRow) SET s.processed = FALSE"
+        );
+    }
+
     // NB: Do we want to unwrap this into a regular promise or something
     // getNextUnprocessedRow(): Result {
 
