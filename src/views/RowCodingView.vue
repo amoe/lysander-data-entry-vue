@@ -2,6 +2,10 @@
 <div>
   <h1>RowCodingView</h1>
 
+  <sheet-carousel :source-rows="sourceRows"></sheet-carousel>
+
+  <el-button type="primary" icon="el-icon-check"
+             @click="a2">Mark as processed</el-button>
 
   <el-tabs type="border-card" v-model="activeName" @tab-click="handleClick">
     <el-tab-pane label="User" name="first">User</el-tab-pane>
@@ -82,22 +86,35 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, {VueConstructor} from 'vue';
 import {createNamespacedHelpers} from 'vuex';
 import {LysanderState} from '@/interfaces';
 import {LysanderComponent} from '@/mixins';
 import mc from '@/mutation-constants';
+import ac from '@/action-constants';
 import ListDialog from '@/components/ListDialog.vue';
+import SheetCarousel from '@/components/SheetCarousel.vue';
 import { StatementResult } from 'neo4j-driver/types/v1/index';
 import {toNeo4jParameters} from '@/transform';
 import { REAL_ID_GENERATOR } from '@/id-generators';
 
-const { mapState, mapMutations } = createNamespacedHelpers('lysander');
+const { mapState, mapMutations, mapActions } = createNamespacedHelpers('lysander');
 
-export default LysanderComponent.extend({
-    components: {ListDialog},
+// Hacks for action bindings
+interface TheseVuexBindings {
+    a1: any;
+    a2: any;
+}
+
+type ThisComponent = VueConstructor<Vue & InstanceType<typeof LysanderComponent> & TheseVuexBindings>;
+
+
+export default (Vue as ThisComponent).extend({
+    mixins: [LysanderComponent],
+    components: {ListDialog, SheetCarousel},
     created() {
         console.log(this.formData);
+        this.a1();
     },
     data() {
         return {
@@ -107,6 +124,9 @@ export default LysanderComponent.extend({
         };
     },
     methods: {
+        handleClick() {
+            console.log("a  tab was clicked");
+        },
         // Wrap up the payload
         onExtraEventInput(newExtraEvent: string, index: number) {
             this.updateExtraEvent({newExtraEvent, index});
@@ -151,11 +171,19 @@ export default LysanderComponent.extend({
             updateExtraEvent: mc.UPDATE_EXTRA_EVENT,
             addExtraEvent: mc.ADD_EXTRA_EVENT,
             addPerson: mc.ADD_PERSON
+        }),
+        ...mapActions({
+            // Why do this?  Only because we are REQUIRED to explicitly type
+            // the action in order to avoid errors, so we may as well avoid
+            // hardcoding long names everywhere.
+            a1: ac.GET_UNPROCESSED_ROWS,
+            a2: ac.MARK_AS_PROCESSED
         })
     },
     computed: {
         ...mapState({
-            formData: (s: LysanderState) => s.formData
+            formData: (s: LysanderState) => s.formData,
+            sourceRows: (s: LysanderState) => s.sourceRows
         })
     }
 });
