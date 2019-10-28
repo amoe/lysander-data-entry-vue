@@ -2,11 +2,10 @@
 <div>
   <h1>ws</h1>
 
-  <sheet-carousel :sheet-data="sourceRows"></sheet-carousel>
+  <sheet-carousel :source-rows="sourceRows"></sheet-carousel>
 
   <el-button type="primary" icon="el-icon-check"
-             @click="markAsProcessed">Mark as processed</el-button>
-  
+             @click="a2">Mark as processed</el-button>
 </div>
 </template>
 
@@ -21,11 +20,11 @@ import {LysanderComponent} from '@/mixins';
 import {TilletDatum, LysanderState} from '@/interfaces';
 import {createNamespacedHelpers} from 'vuex';
 
-
 const { mapState, mapMutations, mapActions } = createNamespacedHelpers('lysander');
 
 interface VuexBindings {
     a1: any;    // action hack
+    a2: any;
 }
 
 type ThisFoo = VueConstructor<Vue & InstanceType<typeof LysanderComponent> & VuexBindings>;
@@ -51,14 +50,12 @@ export default (Vue as ThisFoo).extend({
         console.log(this.sourceRows);
     },
     methods: {
-        markAsProcessed() {
-            console.log("doing nothing");
-        },
         ...mapActions({
             // Why do this?  Only because we are REQUIRED to explicitly type
             // the action in order to avoid errors, so we may as well avoid
             // hardcoding long names everywhere.
-            a1: ac.GET_UNPROCESSED_ROWS
+            a1: ac.GET_UNPROCESSED_ROWS,
+            a2: ac.MARK_AS_PROCESSED
         })
     },
     computed: {

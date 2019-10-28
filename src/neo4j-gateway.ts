@@ -9,7 +9,7 @@ import { CannedStatement } from '@/canned-statements';
 
 const INSERT_SOURCE_ROW = `
 MATCH (s:Source {name: {sourceName}})
-CREATE (r:SourceRow {processed: false, json: {json}}),
+CREATE (r:SourceRow {id: {id}, processed: false, json: {json}}),
        (s)-[:HAS_ROW {position: {index}}]->(r)
 `;
 
@@ -17,7 +17,7 @@ CREATE (r:SourceRow {processed: false, json: {json}}),
 const RETRIEVE_UNPROCESSED = `
     MATCH (s:Source {name: {sourceName}}),
           (s)-[h:HAS_ROW]->(r:SourceRow {processed: false})
-    RETURN r.json AS json
+    RETURN r.json AS json, r.id AS id
     ORDER BY h.position
 `;
 
@@ -195,7 +195,8 @@ export class Neo4jGateway {
                 const p2 = tx.run(INSERT_SOURCE_ROW, {
                     sourceName,
                     index,
-                    json: JSON.stringify(row)
+                    json: JSON.stringify(row),
+                    id: uuidv4()
                 });
                 promises.push(p2);
             });
@@ -212,9 +213,11 @@ export class Neo4jGateway {
         return this.session!.run(query.getCypher(), query.getParameters());
     }
 
-    // markRowProcessed(string rowId): Result {
-
-    // }
+    markAsProcessed(rowId: string): Result {
+        return this.session!.run(
+            "MATCH (s:SourceRow {id: {id}}) SET s.processed = TRUE", { id: rowId }
+        );
+    }
 
     // NB: Do we want to unwrap this into a regular promise or something
     // getNextUnprocessedRow(): Result {

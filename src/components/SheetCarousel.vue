@@ -1,9 +1,9 @@
 <template>
-  <div v-if="sheetData">
+  <div v-if="sourceRows">
     <el-carousel @change="onChange" height="600px" trigger="click"
                  :autoplay="false" arrow="always" :loop="false"
                  :initialIndex="sourceRowListIndex">
-      <el-carousel-item v-for="record in sheetData" :key="record.record_id">
+      <el-carousel-item v-for="row in sourceRows" :key="row.id">
         <table class="tillet-table">
           <thead>
             <tr>
@@ -16,7 +16,7 @@
               <th>Squadron</th>
             </tr>
           </thead>
-          <tillet-row :record="record"></tillet-row>
+          <tillet-row :record="row.datum"></tillet-row>
         </table>
       </el-carousel-item>
     </el-carousel>
@@ -28,15 +28,15 @@ import Vue from 'vue';
 import TilletRow from '@/components/TilletRow.vue';
 import {createNamespacedHelpers} from 'vuex';
 import mc from '@/mutation-constants';
-import {LysanderState} from '@/interfaces';
+import {LysanderState, SourceRow} from '@/interfaces';
 
 const { mapState, mapMutations } = createNamespacedHelpers('lysander');
 
 export default Vue.extend({
     components: {TilletRow},
     props: {
-        sheetData: {
-            type: Array as () => any[]
+        sourceRows: {
+            type: Array as () => SourceRow[]
         }
     },
     methods: {

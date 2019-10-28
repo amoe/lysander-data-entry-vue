@@ -1,3 +1,8 @@
+export interface SourceRow {
+    datum: TilletDatum;
+    id: string;
+}
+
 export interface TilletDatum {
     record_id: number;
     date: string;
@@ -62,7 +67,7 @@ export interface LysanderState {
     counter: number;
     formData: AggregatedForm;
     sourceRowListIndex: number;
-    sourceRows: TilletDatum[];
+    sourceRows: SourceRow[];
 };
 
 // Stupid hack to make webpack reload the interfaces properly
