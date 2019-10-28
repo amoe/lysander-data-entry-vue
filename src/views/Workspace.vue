@@ -2,7 +2,7 @@
 <div>
   <h1>ws</h1>
 
-  <sheet-carousel :sheet-data="tilletData"></sheet-carousel>
+  <sheet-carousel :sheet-data="sourceRows"></sheet-carousel>
 
   <el-button type="primary" icon="el-icon-check"
              @click="markAsProcessed">Mark as processed</el-button>
@@ -18,8 +18,9 @@ import mc from '@/mutation-constants';
 import ac from '@/action-constants';
 import axios from 'axios';
 import {LysanderComponent} from '@/mixins';
-import {TilletDatum} from '@/interfaces';
+import {TilletDatum, LysanderState} from '@/interfaces';
 import {createNamespacedHelpers} from 'vuex';
+
 
 const { mapState, mapMutations, mapActions } = createNamespacedHelpers('lysander');
 
@@ -31,6 +32,7 @@ type ThisFoo = VueConstructor<Vue & InstanceType<typeof LysanderComponent> & Vue
 
 export default (Vue as ThisFoo).extend({
     components: {SheetCarousel},
+    mixins: [LysanderComponent],
     data() {
         return {
             items: [
@@ -38,7 +40,6 @@ export default (Vue as ThisFoo).extend({
                 {content: "bender"},
                 {content: "leela"}
             ],
-            tilletData: [] as TilletDatum[],
             sourceName: "TILLET"
         };
     },
@@ -46,18 +47,8 @@ export default (Vue as ThisFoo).extend({
         console.log(this.gateway);
         console.log(this.a1);
 
-        this.a1();
-
-        // this.gateway.getUnprocessedRows(this.sourceName).then(result => {
-        //     this.$notify.info({title: "win", message: "success"});
-        //     this.tilletData = result.records.map(rec => {
-        //         return JSON.parse(rec.get('json'));
-        //     });
-        // }).catch(e => {
-        //     console.log(e);
-        //     this.$notify.error({title: "foo", message: "fail"});
-        // });
-
+        this.a1(this.sourceName);
+        console.log(this.sourceRows);
     },
     methods: {
         markAsProcessed() {
@@ -71,6 +62,9 @@ export default (Vue as ThisFoo).extend({
         })
     },
     computed: {
+        ...mapState({
+            sourceRows: (s: LysanderState) => s.sourceRows
+        })
     }
 });
 </script>

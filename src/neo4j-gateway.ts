@@ -78,11 +78,16 @@ export class Neo4jGateway {
     }
 
     initialize(): void {
-        this.driver = neo4j.driver(
-            'bolt://' + this.hostname,
-            neo4j.auth.basic(this.username, this.password)
-        );
-        this.session = this.driver.session();
+        if (this.driver === null) {
+            this.driver = neo4j.driver(
+                'bolt://' + this.hostname,
+                neo4j.auth.basic(this.username, this.password)
+            );
+        }
+
+        if (this.session === null) {
+            this.session = this.driver.session();
+        }
     }
 
     checkInitialized(): void {
