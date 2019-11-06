@@ -13,8 +13,13 @@ export const lysander: Module<LysanderState, RootState> = {
         counter: 0,
         formData: {
             date: new Date('1940-01-01'),
-            codenames: [{ content: "fry" }],
+            codenames: [
+                /*
+                { content: "fry" }
+                */
+            ],
             persons: [
+                /*
                 {
                     name: "Fry",
                     role: Role.Agent,
@@ -27,6 +32,7 @@ export const lysander: Module<LysanderState, RootState> = {
                     role: Role.Pilot,
                     aliases: []
                 }
+                */
             ],
             locations: [],
             extraEvents: []
@@ -72,6 +78,9 @@ export const lysander: Module<LysanderState, RootState> = {
         },
         [mc.SET_SOURCE_ROWS]: (state, newRows) => {
             state.sourceRows = newRows;
+        },
+        [mc.UPDATE_PERSON_NAME]: (state, { newName, index }) => {
+            state.formData.persons[index].name = newName;
         }
     },
     actions,

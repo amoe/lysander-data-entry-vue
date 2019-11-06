@@ -70,7 +70,13 @@
   <h2>Persons</h2>
   <div>
     <el-table :data="formData.persons">
-      <el-table-column prop="name" label="Name"/>
+      <el-table-column label="Name">
+        <template slot-scope="scope">
+          <el-input :value="scope.row.name"
+                    @input="onPersonNameInput($event, scope.$index)"></el-input>
+        </template>
+      </el-table-column>
+
       <el-table-column label="Operations">
         <template slot-scope="scope">
           <el-button size="mini"
@@ -127,6 +133,10 @@ export default (Vue as ThisComponent).extend({
         handleClick() {
             console.log("a  tab was clicked");
         },
+        onPersonNameInput(newName: string, index: number) {
+            console.log("onpersonnameinput, index is %o", index);
+            this.updatePersonName({newName, index});
+        },
         // Wrap up the payload
         onExtraEventInput(newExtraEvent: string, index: number) {
             this.updateExtraEvent({newExtraEvent, index});
@@ -151,7 +161,7 @@ export default (Vue as ThisComponent).extend({
             const n = result.summary.counters.nodesCreated();
             const r = result.summary.counters.relationshipsCreated();
             
-            this.$notify.info({title:'foo', message: `created ${n} nodes, ${r} relationships`});
+            this.$notify.info({title:'Success', message: `created ${n} nodes, ${r} relationships`});
         },
         submit() {
             this.gateway.submitModel(
@@ -159,7 +169,7 @@ export default (Vue as ThisComponent).extend({
             ).then(result => {
                 result.forEach(this.report);
             }).catch(error => {
-                this.$notify.error({title: 'bar', message: error.message});
+                this.$notify.error({title: 'Error', message: error.message});
             });
         },
         ...mapMutations({
@@ -170,7 +180,8 @@ export default (Vue as ThisComponent).extend({
             addLocation: mc.ADD_LOCATION,
             updateExtraEvent: mc.UPDATE_EXTRA_EVENT,
             addExtraEvent: mc.ADD_EXTRA_EVENT,
-            addPerson: mc.ADD_PERSON
+            addPerson: mc.ADD_PERSON,
+            updatePersonName: mc.UPDATE_PERSON_NAME
         }),
         ...mapActions({
             // Why do this?  Only because we are REQUIRED to explicitly type
