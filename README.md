@@ -1,4 +1,6 @@
-# lysander-data-entry
+# lysander-data-entry-vue
+
+DO NOT PUSH, use lysander-data-entry instead.
 
 ## Dev server
 
